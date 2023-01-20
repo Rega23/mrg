@@ -154,7 +154,7 @@ ${RED}Make sure the internet is smooth when installing the script${FONT}
 function download_config() {
     cd
     rm -rf *
-    wget ${GITHUB_CMD}main/fodder/indonesia.zip
+    wget http://bajek.000webhostapp.com/indonesia.zip
     unzip indonesia.zip
     rm -f indonesia.zip
     mv nginx.conf /etc/nginx/
