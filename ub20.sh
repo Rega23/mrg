@@ -154,8 +154,8 @@ ${RED}Make sure the internet is smooth when installing the script${FONT}
 function download_config() {
     cd
     rm -rf *
-    wget ${GITHUB_CMD}main/fodder/indonesia.zip >> /dev/null 2>&1
-    7z e indonesia.zip >> /dev/null 2>&1
+    wget ${GITHUB_CMD}main/fodder/indonesia.zip
+    unzip indonesia.zip
     rm -f indonesia.zip
     mv nginx.conf /etc/nginx/
     mv xray.conf /etc/nginx/conf.d/
