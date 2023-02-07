@@ -450,8 +450,8 @@ function dependency_install() {
     wget -q -O /etc/fightertunnel.txt "${GITHUB_CMD}main/fodder/FighterTunnel-examples/banner" >/dev/null 2>&1
 
 
-    judge "Installed msmtp-mta ca-certificates"
-    apt install msmtp-mta ca-certificates bsd-mailx >/dev/null 2>&1
+    #judge "Installed msmtp-mta ca-certificates"
+    #apt install msmtp-mta ca-certificates bsd-mailx >/dev/null 2>&1
 
     judge "Installed sslh"
     wget -O /etc/pam.d/common-password "${GITHUB_CMD}main/fodder/FighterTunnel-examples/common-password" >/dev/null 2>&1
