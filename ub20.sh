@@ -76,16 +76,16 @@ cloudflare() {
 #install nginx_install
     # // Checking System
     if [[ $(cat /etc/os-release | grep -w ID | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/ID//g') == "ubuntu" ]]; then
-        judge "Setup nginx For OS Is $(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')"
+        #Setup nginx For OS Is $(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')"
         # // sudo add-apt-repository ppa:nginx/stable -y >/dev/null 2>&1
         sudo apt-get update -y >/dev/null 2>&1
         sudo apt-get install nginx -y >/dev/null 2>&1
         elif [[ $(cat /etc/os-release | grep -w ID | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/ID//g') == "debian" ]]; then
-        judge "Setup nginx For OS Is ( ${GREENBG}$(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')"
+        "Setup nginx For OS Is ( ${GREENBG}$(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')"
         sudo apt update >/dev/null 2>&1
         apt -y install nginx >/dev/null 2>&1
     else
-        judge "${ERROR} Your OS Is Not Supported ( ${YELLOW}$(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')${FONT} )"
+        "${ERROR} Your OS Is Not Supported ( ${YELLOW}$(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')${FONT} )"
         # // exit 1
     fi
     
@@ -374,7 +374,8 @@ LINUX       : <code>${OS}</code>
     echo ""
     echo "Please wait to install Package..."
     apt update >/dev/null 2>&1
-    judge "Update configuration"
+
+#"Update configuration"
     
     apt clean all >/dev/null 2>&1
     apt autoremove -y >/dev/null 2>&1
@@ -382,7 +383,8 @@ LINUX       : <code>${OS}</code>
     sudo apt dist-upgrade -y >/dev/null 2>&1
     sudo apt-get remove --purge ufw firewalld -y >/dev/null 2>&1
     sudo apt-get remove --purge exim4 -y >/dev/null 2>&1
-    judge "Clean configuration"
+
+# "Clean configuration"
     
     ${INS} jq zip unzip p7zip-full >/dev/null 2>&1
     #"Installed successfully jq zip unzip"
@@ -416,7 +418,7 @@ LINUX       : <code>${OS}</code>
 
 #install_xray
     # // Make Folder Xray & Import link for generating Xray | BHOIKFOST YAHYA AUTOSCRIPT
-    judge "Core Xray 1.6.5 Version installed successfully"
+    #"Core Xray 1.6.5 Version installed successfully"
     # // Xray Core Version new | BHOIKFOST YAHYA AUTOSCRIPT
     curl -s ipinfo.io/city >> /etc/xray/city 
     curl -s ipinfo.io/org | cut -d " " -f 2-10 >> /etc/xray/isp 
