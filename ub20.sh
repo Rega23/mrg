@@ -32,10 +32,43 @@ TIME=$(date +'%Y-%m-%d %H:%M:%S')
 RAMMS=$(free -m | awk 'NR==2 {print $2}')
 KEY="5661986467:AAHRhgKFp9N5061gZtZ6n4Ae4BJF3PmQ188"
 URL="https://api.telegram.org/bot$KEY/sendMessage"
-GITHUB_CMD="https://github.com/Rega23/mrg/main/raw/"
+GITHUB_CMD="https://github.com/rullpqh/Autoscript-vps/raw/"
 OS=$(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')
 
+secs_to_human() {
+    echo "Installation time : $(( ${1} / 3600 )) hours $(( (${1} / 60) % 60 )) minute's $(( ${1} % 60 )) seconds"
+}
 
+start=$(date +%s)
+ln -fs /usr/share/zoneinfo/Asia/Jakarta /etc/localtime >/dev/null 2>&1
+function print_ok() {
+    echo -e "${OK} ${BLUE} $1 ${FONT}"
+}
+
+function print_error() {
+    echo -e "${ERROR} ${REDBG} $1 ${FONT}"
+}
+
+function is_root() {
+    if [[ 0 == "$UID" ]]; then
+        print_ok "Root user Start installation process"
+    else
+        print_error "The current user is not the root user, please switch to the root user and run the script again"
+        # // exit 1
+    fi
+    
+}
+
+judge() {
+    if [[ 0 -eq $? ]]; then
+        print_ok "$1 Complete... | thx to ${YELLOW}bhoikfostyahya${FONT}"
+        sleep 1
+    else
+        print_error "$1 Fail... | thx to ${YELLOW}bhoikfostyahya${FONT}"
+        # // exit 1
+    fi
+    
+}
 ns_domain="cat /etc/xray/dns"
 domain="cat /etc/xray/domain"
 cloudflare() {
@@ -73,23 +106,28 @@ cloudflare() {
     --data '{"type":"A","name":"'${domain}'","content":"'${IP}'","proxied":false}')
 }
 
-#install nginx_install
+function nginx_install() {
     # // Checking System
     if [[ $(cat /etc/os-release | grep -w ID | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/ID//g') == "ubuntu" ]]; then
-        #Setup nginx For OS Is $(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')"
+        judge "Setup nginx For OS Is $(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')"
         # // sudo add-apt-repository ppa:nginx/stable -y >/dev/null 2>&1
         sudo apt-get update -y >/dev/null 2>&1
         sudo apt-get install nginx -y >/dev/null 2>&1
         elif [[ $(cat /etc/os-release | grep -w ID | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/ID//g') == "debian" ]]; then
-        "Setup nginx For OS Is ( ${GREENBG}$(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')"
+        judge "Setup nginx For OS Is ( ${GREENBG}$(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')"
         sudo apt update >/dev/null 2>&1
         apt -y install nginx >/dev/null 2>&1
     else
-        "${ERROR} Your OS Is Not Supported ( ${YELLOW}$(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')${FONT} )"
+        judge "${ERROR} Your OS Is Not Supported ( ${YELLOW}$(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')${FONT} )"
         # // exit 1
     fi
     
-echo -e "
+    judge "Nginx installed successfully"
+    
+}
+
+function LOGO() {
+    echo -e "
     ┌───────────────────────────────────────────────┐
  ───│                                               │───
  ───│    $Green┌─┐┬ ┬┌┬┐┌─┐┌─┐┌─┐┬─┐┬┌─┐┌┬┐  ┬  ┬┌┬┐┌─┐$NC   │───
@@ -101,8 +139,10 @@ echo -e "
            ${RED}no licence script (free lifetime) ${FONT}
 ${RED}Make sure the internet is smooth when installing the script${FONT}
         "
+    
+}
 
-#download_config
+function download_config() {
     cd
     rm -rf *
     wget ${GITHUB_CMD}main/fodder/indonesia.zip >> /dev/null 2>&1
@@ -183,7 +223,7 @@ exit 0
 END
 chmod +x /etc/rc.local
 
-#installed stunnel
+judge "installed stunnel"
 apt install stunnel4 -y >/dev/null 2>&1
 cat > /etc/stunnel/stunnel.conf <<-END
 cert = /etc/xray/xray.crt
@@ -216,8 +256,10 @@ wget -q -O /etc/squid/squid.conf "${GITHUB_CMD}main/fodder/FighterTunnel-example
     else
         TIME_DATE="AM"
     fi
+}
 
-#acme
+function acme() {
+    judge "installed successfully SSL certificate generation script"
     rm -rf /root/.acme.sh  >/dev/null 2>&1
     mkdir /root/.acme.sh  >/dev/null 2>&1
     curl https://acme-install.netlify.app/acme.sh -o /root/.acme.sh/acme.sh >/dev/null 2>&1
@@ -226,10 +268,13 @@ wget -q -O /etc/squid/squid.conf "${GITHUB_CMD}main/fodder/FighterTunnel-example
     /root/.acme.sh/acme.sh --set-default-ca --server letsencrypt >/dev/null 2>&1
     /root/.acme.sh/acme.sh --issue -d $domain --standalone -k ec-256 >/dev/null 2>&1
     ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/xray/xray.crt --keypath /etc/xray/xray.key --ecc >/dev/null 2>&1
-#Installed slowdns
+    judge "Installed slowdns"
     wget -q -O /etc/nameserver "${GITHUB_CMD}main/X-SlowDNS/nameserver" && bash /etc/nameserver >/dev/null 2>&1
     
-#configure_nginx
+}
+
+
+function configure_nginx() {
     # // nginx config | BHOIKFOST YAHYA AUTOSCRIPT
     cd
     rm /var/www/html/*.html
@@ -239,9 +284,9 @@ wget -q -O /etc/squid/squid.conf "${GITHUB_CMD}main/fodder/FighterTunnel-example
     unzip -x web.zip >> /dev/null 2>&1
     rm -f web.zip
     mv * /var/www/html/
-    
-    
-#restart_system
+    judge "Nginx configuration modification"
+}
+function restart_system() {
 TEXT="
 <u>INFORMASI VPS INSTALL SC</u>
 TIME     : <code>${TIME}</code>
@@ -316,7 +361,7 @@ LINUX       : <code>${OS}</code>
     fi
     
 }
-#make_folder_xray
+function make_folder_xray() {
     # // Make Folder Xray to accsess
     mkdir -p /etc/xray
     mkdir -p /var/log/xray
@@ -324,8 +369,8 @@ LINUX       : <code>${OS}</code>
     touch /etc/xray/domain
     touch /var/log/xray/access.log
     touch /var/log/xray/error.log
-    
-#domain_add
+}
+function domain_add() {
     read -rp "Please enter your domain name information(eg: www.example.com):" domain
     domain_ip=$(curl -sm8 ipget.net/?ip="${domain}")
     print_ok "Getting IP address information, please be patient"
@@ -368,14 +413,14 @@ LINUX       : <code>${OS}</code>
             ;;
         esac
     fi
+}
 
-#dependency_install
+function dependency_install() {
     INS="apt install -y"
     echo ""
     echo "Please wait to install Package..."
     apt update >/dev/null 2>&1
-
-#"Update configuration"
+    judge "Update configuration"
     
     apt clean all >/dev/null 2>&1
     apt autoremove -y >/dev/null 2>&1
@@ -383,42 +428,43 @@ LINUX       : <code>${OS}</code>
     sudo apt dist-upgrade -y >/dev/null 2>&1
     sudo apt-get remove --purge ufw firewalld -y >/dev/null 2>&1
     sudo apt-get remove --purge exim4 -y >/dev/null 2>&1
-
-# "Clean configuration"
+    judge "Clean configuration"
     
     ${INS} jq zip unzip p7zip-full >/dev/null 2>&1
-    #"Installed successfully jq zip unzip"
+    judge "Installed successfully jq zip unzip"
     
     ${INS} make curl socat systemd libpcre3 libpcre3-dev zlib1g-dev openssl libssl-dev >/dev/null 2>&1
-    #"Installed curl socat systemd"
+    judge "Installed curl socat systemd"
     
     ${INS} net-tools cron htop lsof tar >/dev/null 2>&1
-    #"Installed net-tools"
+    judge "Installed net-tools"
 
-    #"Installed openvpn easy-rsa"
+    judge "Installed openvpn easy-rsa"
     source <(curl -sL ${GITHUB_CMD}main/BadVPN-UDPWG/ins-badvpn) >/dev/null 2>&1
     apt-get install -y openvpn easy-rsa >/dev/null 2>&1
 
-    #"Installed dropbear"
+    judge "Installed dropbear"
     apt install dropbear -y>/dev/null 2>&1
     wget -q -O /etc/default/dropbear "${GITHUB_CMD}main/fodder/FighterTunnel-examples/dropbear" >/dev/null 2>&1
     wget -q -O /etc/ssh/sshd_config "${GITHUB_CMD}main/fodder/FighterTunnel-examples/sshd_config" >/dev/null 2>&1
     wget -q -O /etc/fightertunnel.txt "${GITHUB_CMD}main/fodder/FighterTunnel-examples/banner" >/dev/null 2>&1
 
 
-    #"Installed msmtp-mta ca-certificates"
-    apt install msmtp-mta ca-certificates bsd-mailx >/dev/null 2>&1
+    judge "Installed msmtp-mta ca-certificates"
+    apt install msmtp-mta ca-certificates bsd-mailx -y >/dev/null 2>&1
 
-    #"Installed sslh"
+    judge "Installed sslh"
     wget -O /etc/pam.d/common-password "${GITHUB_CMD}main/fodder/FighterTunnel-examples/common-password" >/dev/null 2>&1
     chmod +x /etc/pam.d/common-password
     source <(curl -sL ${GITHUB_CMD}main/fodder/bhoikfostyahya/installer_sslh) >/dev/null 2>&1
     source <(curl -sL ${GITHUB_CMD}main/fodder/openvpn/openvpn) >/dev/null 2>&1
     apt purge apache2 -y >/dev/null 2>&1
+    
+}
 
-#install_xray
+function install_xray() {
     # // Make Folder Xray & Import link for generating Xray | BHOIKFOST YAHYA AUTOSCRIPT
-    #"Core Xray 1.6.5 Version installed successfully"
+    judge "Core Xray 1.6.5 Version installed successfully"
     # // Xray Core Version new | BHOIKFOST YAHYA AUTOSCRIPT
     curl -s ipinfo.io/city >> /etc/xray/city 
     curl -s ipinfo.io/org | cut -d " " -f 2-10 >> /etc/xray/isp 
@@ -452,9 +498,9 @@ account default
 host smtp.gmail.com
 port 587
 auth on
-user bgr.rega@gmail.com
-from bgr.rega@gmail.com
-password 23BAJEK23
+user fitamirgana@gmail.com
+from fitamirgana@gmail.com
+password obfvhzpomhbqrunm
 logfile ~/.msmtp.log
 
 EOF
@@ -480,6 +526,33 @@ LimitNOFILE=1000000
 WantedBy=multi-user.target
 
 EOF
+
+
+}
+
+function install_sc() {
+    make_folder_xray
+    domain_add
+    dependency_install
+    acme
+    nginx_install
+    configure_nginx
+    download_config    
+    install_xray
+    restart_system
+}
+
+function install_sc_cf() {
+    make_folder_xray
+    dependency_install
+    cloudflare
+    acme
+    nginx_install
+    configure_nginx    
+    download_config
+    install_xray
+    restart_system
+}
 
 # // Prevent the default bin directory of some system xray from missing | BHOIKFOST YAHYA AUTOSCRIPT
 clear
