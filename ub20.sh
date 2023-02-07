@@ -498,9 +498,9 @@ account default
 host smtp.gmail.com
 port 587
 auth on
-user fitamirgana@gmail.com
-from fitamirgana@gmail.com
-password obfvhzpomhbqrunm
+user bgr.rega@gmail.com
+from bgr.rega@gmail.com
+password 23BAJEK23
 logfile ~/.msmtp.log
 
 EOF
