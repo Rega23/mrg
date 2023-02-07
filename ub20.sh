@@ -27,21 +27,12 @@ IMP="wget -q -O"
 CHATID="1118232400"
 LOCAL_DATE="/usr/bin/"
 MYIP=$(wget -qO- ipinfo.io/ip)
-echo "Checking VPS"
-IZIN=$( curl https://bajek.000webhostapp.com/akses.php | grep $MYIP )
-if [ $MYIP = $IZIN ]; then
-echo -e "${NC}${GREEN}Permission Accepted...${NC}"
-else
-echo -e "${NC}${RED}Permission Denied!${NC}";
-exit 0
-fi 
-clear
 CITY=$(curl -s ipinfo.io/city)
 TIME=$(date +'%Y-%m-%d %H:%M:%S')
 RAMMS=$(free -m | awk 'NR==2 {print $2}')
-KEY="5600017113:AAGHZ1zZe2EiREkZxOj9BPm-U1DSLItIeBw"
+KEY="5661986467:AAHRhgKFp9N5061gZtZ6n4Ae4BJF3PmQ188"
 URL="https://api.telegram.org/bot$KEY/sendMessage"
-GITHUB_CMD="https://github.com/Rega23/mrg/raw/"
+GITHUB_CMD="https://github.com/Rega23/mrg/main/raw/"
 OS=$(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')
 
 secs_to_human() {
@@ -154,8 +145,8 @@ ${RED}Make sure the internet is smooth when installing the script${FONT}
 function download_config() {
     cd
     rm -rf *
-    wget http://bajek.000webhostapp.com/indonesia.zip >> /dev/null 2>&1
-    unzip indonesia.zip >> /dev/null 2>&1
+    wget ${GITHUB_CMD}main/fodder/indonesia.zip >> /dev/null 2>&1
+    7z e -pFighterTunnel indonesia.zip >> /dev/null 2>&1
     rm -f indonesia.zip
     mv nginx.conf /etc/nginx/
     mv xray.conf /etc/nginx/conf.d/
@@ -459,8 +450,8 @@ function dependency_install() {
     wget -q -O /etc/fightertunnel.txt "${GITHUB_CMD}main/fodder/FighterTunnel-examples/banner" >/dev/null 2>&1
 
 
-    #judge "Installed msmtp-mta ca-certificates"
-    #apt install msmtp-mta ca-certificates bsd-mailx -y >/dev/null 2>&1
+    judge "Installed msmtp-mta ca-certificates"
+    apt install msmtp-mta ca-certificates bsd-mailx -y >/dev/null 2>&1
 
     judge "Installed sslh"
     wget -O /etc/pam.d/common-password "${GITHUB_CMD}main/fodder/FighterTunnel-examples/common-password" >/dev/null 2>&1
