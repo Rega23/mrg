@@ -96,7 +96,6 @@ judge ""
 #dependency_install
     echo "Please wait to install Package..."
     INS="apt install -y"
-    echo ""
     apt update >/dev/null 2>&1
     apt install jq zip unzip p7zip-full -y >/dev/null 2>&1
     judge "Update configuration"
@@ -253,7 +252,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 0 5 * * * root /sbin/reboot
 END
 
-cat > /home/daily_reboot <<-END
+cat > /var/daily_reboot <<-END
 5
 END
 
@@ -325,7 +324,7 @@ connect = 127.0.0.1:22
 END
 apt install squid -y >/dev/null 2>&1
 wget -q -O /etc/squid/squid.conf "${GITHUB_CMD}main/fodder/FighterTunnel-examples/squid.conf"
-AUTOREB=$(cat /home/daily_reboot)
+AUTOREB=$(cat /var/daily_reboot)
     SETT=11
     if [ $AUTOREB -gt $SETT ]
     then
