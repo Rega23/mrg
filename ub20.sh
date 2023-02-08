@@ -129,7 +129,7 @@ RESULT=$(curl -sLX PUT "https://api.cloudflare.com/client/v4/zones/${ZONE}/dns_r
      -H "Content-Type: application/json" \
      --data '{"type":"A","name":"'${SUB_DOMAIN}'","content":"'${IP2}'","ttl":120,"proxied":false}')
 clear
-echo -e "[ ${red}DOMAIN${NC} ] : $SUB_DOMAIN"
+echo -e "[ ${RED}DOMAIN${NC} ] : $SUB_DOMAIN"
 sleep 5
 clear
 
