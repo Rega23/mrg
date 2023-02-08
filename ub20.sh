@@ -92,6 +92,7 @@ LOGO
 echo -e "${RED}JANGAN INSTALL SCRIPT INI MENGGUNAKAN KONEKSI VPN!!!${FONT}"
 echo -e "${YELLOW}CONTOH SSH WS SILAHKAN DI BAWA BUG.MU/FIGHTERTUNNEL${FONT}"
 
+apt update -y >/dev/null 2>&1
 apt install jq zip unzip p7zip-full >/dev/null 2>&1
 
 #AUTO-DOMAIN
