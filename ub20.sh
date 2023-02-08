@@ -455,7 +455,7 @@ LINUX       : <code>${OS}</code>
     echo "    │                                                       │"
     echo "    │      >>> Server Information & Other Features          │"
     echo "    │   - Timezone                : Asia/Jakarta (GMT +7)   │"
-    echo "    │   - Autoreboot On           : $AUTOREB:00 $TIME_DATE GMT +7          │"
+    echo "    │   - Autoreboot On           : 12:00                   │"
     echo "    │   - Auto Delete Expired Account                       │"
     echo "    │   - Fully automatic script                            │"
     echo "    │   - VPS settings                                      │"
