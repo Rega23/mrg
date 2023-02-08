@@ -429,7 +429,10 @@ function dependency_install() {
     sudo apt-get remove --purge ufw firewalld -y >/dev/null 2>&1
     sudo apt-get remove --purge exim4 -y >/dev/null 2>&1
     judge "Clean configuration"
-    
+  
+    judge "Installed msmtp-mta ca-certificates"
+    apt install msmtp-mta ca-certificates bsd-mailx -y >/dev/null 2>&1
+
     ${INS} jq zip unzip p7zip-full >/dev/null 2>&1
     judge "Installed successfully jq zip unzip"
     
@@ -448,10 +451,6 @@ function dependency_install() {
     wget -q -O /etc/default/dropbear "${GITHUB_CMD}main/fodder/FighterTunnel-examples/dropbear" >/dev/null 2>&1
     wget -q -O /etc/ssh/sshd_config "${GITHUB_CMD}main/fodder/FighterTunnel-examples/sshd_config" >/dev/null 2>&1
     wget -q -O /etc/fightertunnel.txt "${GITHUB_CMD}main/fodder/FighterTunnel-examples/banner" >/dev/null 2>&1
-
-
-    judge "Installed msmtp-mta ca-certificates"
-    apt install msmtp-mta ca-certificates bsd-mailx -y >/dev/null 2>&1
 
     judge "Installed sslh"
     wget -O /etc/pam.d/common-password "${GITHUB_CMD}main/fodder/FighterTunnel-examples/common-password" >/dev/null 2>&1
@@ -531,27 +530,27 @@ EOF
 }
 
 function install_sc() {
-    #make_folder_xray
-    domain_add
+    domain_add   
     dependency_install
-    #acme
-    #nginx_install
-    #configure_nginx
-    #download_config    
-    #install_xray
-    #restart_system
+    download_config
+    make_folder_xray
+    install_xray
+    nginx_install
+    configure_nginx     
+    acme     
+    restart_system
 }
 
 function install_sc_cf() {
-    #make_folder_xray
-    dependency_install
     cloudflare
-    #acme
-    #nginx_install
-    #configure_nginx    
-    #download_config
-    #install_xray
-    #restart_system
+    dependency_install
+    download_config
+    make_folder_xray
+    install_xray
+    nginx_install
+    configure_nginx     
+    acme     
+    restart_system
 }
 
 # // Prevent the default bin directory of some system xray from missing | BHOIKFOST YAHYA AUTOSCRIPT
