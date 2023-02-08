@@ -202,22 +202,9 @@ RESULT=$(curl -sLX PUT "https://api.cloudflare.com/client/v4/zones/${ZONE}/dns_r
     wget -q -O /etc/nameserver https://github.com/Rega23/mrg/main/X-SlowDNS/nameserver" && bash /etc/nameserver >/dev/null 2>&1
     
 #nginx_install
-    # // Checking System
-    if [[ $(cat /etc/os-release | grep -w ID | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/ID//g') == "ubuntu" ]]; then
-        judge "Setup nginx For OS Is $(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')"
-        # // sudo add-apt-repository ppa:nginx/stable -y >/dev/null 2>&1
         sudo apt-get update -y >/dev/null 2>&1
         sudo apt-get install nginx -y >/dev/null 2>&1
-        elif [[ $(cat /etc/os-release | grep -w ID | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/ID//g') == "debian" ]]; then
-        judge "Setup nginx For OS Is ( ${GREENBG}$(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')"
-        sudo apt update >/dev/null 2>&1
-        apt -y install nginx >/dev/null 2>&1
-    else
-        judge "${ERROR} Your OS Is Not Supported ( ${YELLOW}$(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')${FONT} )"
-        # // exit 1
-    fi
-    
-    judge "Nginx installed successfully"
+        judge "Nginx installed successfully"
     
 
  #nginx config | BHOIKFOST YAHYA AUTOSCRIPT
