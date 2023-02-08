@@ -531,9 +531,9 @@ EOF
 }
 
 function install_sc() {
-    make_folder_xray
+    #make_folder_xray
     domain_add
-    #dependency_install
+    dependency_install
     #acme
     #nginx_install
     #configure_nginx
@@ -543,8 +543,8 @@ function install_sc() {
 }
 
 function install_sc_cf() {
-    make_folder_xray
-    #dependency_install
+    #make_folder_xray
+    dependency_install
     cloudflare
     #acme
     #nginx_install
