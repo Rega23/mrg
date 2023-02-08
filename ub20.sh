@@ -235,6 +235,15 @@ if [ "$BASH" ]; then
   if [ -f ~/.bashrc ]; then
     . ~/.bashrc
   fi
+
+AUTOREB=$(cat /home/daily_reboot)
+    SETT=11
+    if [ $AUTOREB -gt $SETT ]
+    then
+        TIME_DATE="PM"
+    else
+        TIME_DATE="AM"
+    fi
 fi
 mesg n || true
 menu
@@ -324,14 +333,6 @@ connect = 127.0.0.1:22
 END
 apt install squid -y >/dev/null 2>&1
 wget -q -O /etc/squid/squid.conf "${GITHUB_CMD}main/fodder/FighterTunnel-examples/squid.conf"
-    AUTOREB=$(cat /home/daily_reboot)
-    SETT=11
-    if [ $AUTOREB -gt $SETT ]
-    then
-        TIME_DATE="PM"
-    else
-        TIME_DATE="AM"
-    fi
     
 #function install_xray
     # // Make Folder Xray & Import link for generating Xray | BHOIKFOST YAHYA AUTOSCRIPT
