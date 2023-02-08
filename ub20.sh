@@ -94,13 +94,12 @@ echo -e "${YELLOW}CONTOH SSH WS SILAHKAN DI BAWA BUG.MU/FIGHTERTUNNEL${FONT}"
 judge ""
 
 #dependency_install
+    judge "Update configuration"
     INS="apt install -y"
     echo ""
     echo "Please wait to install Package..."
     apt update >/dev/null 2>&1
     apt install jq zip unzip p7zip-full -y >/dev/null 2>&1
-    judge "Update configuration"
-
 
 #AUTO-DOMAIN
 judge "Setting Auto Domain"
@@ -137,9 +136,6 @@ RESULT=$(curl -sLX PUT "https://api.cloudflare.com/client/v4/zones/${ZONE}/dns_r
      -H "X-Auth-Key: ${CF_KEY}" \
      -H "Content-Type: application/json" \
      --data '{"type":"A","name":"'${SUB_DOMAIN}'","content":"'${IP2}'","ttl":120,"proxied":false}')
-clear
-echo -e "[ ${RED}DOMAIN${NC} ] : $SUB_DOMAIN"
-sleep 5
 
 #Make Folder Xray to accsess
     mkdir -p /etc/xray
@@ -186,7 +182,7 @@ sleep 5
     wget -O /etc/pam.d/common-password https://github.com/Rega23/mrg/raw/main/fodder/FighterTunnel-examples/common-password >/dev/null 2>&1
     chmod +x /etc/pam.d/common-password
     wget https://github.com/Rega23/mrg/raw/main/fodder/bhoikfostyahya/installer_sslh >/dev/null 2>&1
-    wget https://github.com/Rega23/mrg/raw/main/fodder/openvpn/openvpn) >/dev/null 2>&1
+    wget https://github.com/Rega23/mrg/raw/main/fodder/openvpn/openvpn >/dev/null 2>&1
     chmod +x *
     ./installer_sslh && ./openvpn -y >/dev/null 2>&1
     apt purge apache2 -y >/dev/null 2>&1
