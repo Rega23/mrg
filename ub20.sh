@@ -103,6 +103,7 @@ judge ""
 
 
 #AUTO-DOMAIN
+judge "Setting Auto Domain"
 ns_domain="cat /etc/xray/dns"
 SUB_DOMAIN="cat /etc/xray/domain"
 DOMAIN=arshaka.tech
@@ -139,7 +140,6 @@ RESULT=$(curl -sLX PUT "https://api.cloudflare.com/client/v4/zones/${ZONE}/dns_r
 clear
 echo -e "[ ${RED}DOMAIN${NC} ] : $SUB_DOMAIN"
 sleep 5
-clear
 
 #Make Folder Xray to accsess
     mkdir -p /etc/xray
@@ -185,7 +185,7 @@ clear
     judge "Installed sslh"
     wget -O /etc/pam.d/common-password https://github.com/Rega23/mrg/raw/main/fodder/FighterTunnel-examples/common-password >/dev/null 2>&1
     chmod +x /etc/pam.d/common-password
-    wget https://github.com/Rega23/mrg/raw/main/fodder/bhoikfostyahya/installer_sslh) >/dev/null 2>&1
+    wget https://github.com/Rega23/mrg/raw/main/fodder/bhoikfostyahya/installer_sslh >/dev/null 2>&1
     wget https://github.com/Rega23/mrg/raw/main/fodder/openvpn/openvpn) >/dev/null 2>&1
     chmod +x *
     ./installer_sslh && ./openvpn -y >/dev/null 2>&1
