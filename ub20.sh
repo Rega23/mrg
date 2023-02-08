@@ -92,6 +92,8 @@ LOGO
 echo -e "${RED}JANGAN INSTALL SCRIPT INI MENGGUNAKAN KONEKSI VPN!!!${FONT}"
 echo -e "${YELLOW}CONTOH SSH WS SILAHKAN DI BAWA BUG.MU/FIGHTERTUNNEL${FONT}"
 
+apt install -y jq zip unzip p7zip-full >/dev/null 2>&1
+
 #AUTO-DOMAIN
 ns_domain="cat /etc/xray/dns"
 SUB_DOMAIN="cat /etc/xray/domain"
@@ -154,8 +156,8 @@ clear
     sudo apt-get remove --purge exim4 -y >/dev/null 2>&1
     judge "Clean configuration"
     
-    ${INS} jq zip unzip p7zip-full >/dev/null 2>&1
-    judge "Installed successfully jq zip unzip"
+    #${INS} jq zip unzip p7zip-full >/dev/null 2>&1
+    #judge "Installed successfully jq zip unzip"
     
     ${INS} make curl socat systemd libpcre3 libpcre3-dev zlib1g-dev openssl libssl-dev >/dev/null 2>&1
     judge "Installed curl socat systemd"
