@@ -95,11 +95,11 @@ judge ""
 
 #dependency_install
     echo "Please wait to install Package..."
-    judge "Update configuration"
     INS="apt install -y"
     echo ""
     apt update >/dev/null 2>&1
     apt install jq zip unzip p7zip-full -y >/dev/null 2>&1
+    judge "Update configuration"
 
 #AUTO-DOMAIN
 judge "Setting Auto Domain"
