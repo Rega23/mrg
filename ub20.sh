@@ -253,6 +253,10 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 0 5 * * * root /sbin/reboot
 END
 
+cat > /home/daily_reboot <<-END
+5
+END
+
 cat > /usr/bin/service.restart <<-END
 service nginx restart >/dev/null 2>&1
 service xray restart >/dev/null 2>&1 
@@ -268,9 +272,6 @@ END
 echo "*/1 * * * * root echo -n > /var/log/nginx/access.log" > /etc/cron.d/log.nginx
 echo "*/1 * * * * root echo -n > /var/log/xray/access.log" >> /etc/cron.d/log.xray
 service cron restart
-cat > /home/daily_reboot <<-END
-5
-END
 
 cat > /etc/systemd/system/rc-local.service <<-END
 [Unit]
