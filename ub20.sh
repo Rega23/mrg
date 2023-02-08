@@ -91,8 +91,8 @@ clear
 LOGO
 echo -e "${RED}JANGAN INSTALL SCRIPT INI MENGGUNAKAN KONEKSI VPN!!!${FONT}"
 echo -e "${YELLOW}CONTOH SSH WS SILAHKAN DI BAWA BUG.MU/FIGHTERTUNNEL${FONT}"
-
-apt install jq zip unzip p7zip-full
+apt update -y
+apt install jq zip unzip p7zip-full -y
 
 #AUTO-DOMAIN
 ns_domain="cat /etc/xray/dns"
