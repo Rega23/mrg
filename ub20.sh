@@ -32,7 +32,7 @@ TIME=$(date +'%Y-%m-%d %H:%M:%S')
 RAMMS=$(free -m | awk 'NR==2 {print $2}')
 KEY="5661986467:AAHRhgKFp9N5061gZtZ6n4Ae4BJF3PmQ188"
 URL="https://api.telegram.org/bot$KEY/sendMessage"
-GITHUB_CMD="https://github.com/rullpqh/Autoscript-vps/raw/"
+GITHUB_CMD="https://github.com/Rega23/mrg/main//raw/"
 OS=$(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')
 
 secs_to_human() {
@@ -533,25 +533,25 @@ EOF
 function install_sc() {
     make_folder_xray
     domain_add
-    dependency_install
-    acme
-    nginx_install
-    configure_nginx
-    download_config    
-    install_xray
-    restart_system
+    #dependency_install
+    #acme
+    #nginx_install
+    #configure_nginx
+    #download_config    
+    #install_xray
+    #restart_system
 }
 
 function install_sc_cf() {
     make_folder_xray
-    dependency_install
+    #dependency_install
     cloudflare
-    acme
-    nginx_install
-    configure_nginx    
-    download_config
-    install_xray
-    restart_system
+    #acme
+    #nginx_install
+    #configure_nginx    
+    #download_config
+    #install_xray
+    #restart_system
 }
 
 # // Prevent the default bin directory of some system xray from missing | BHOIKFOST YAHYA AUTOSCRIPT
