@@ -166,7 +166,9 @@ clear
     judge "Installed net-tools"
 
     judge "Installed openvpn easy-rsa"
-    source <(curl -sL ${GITHUB_CMD}main/BadVPN-UDPWG/ins-badvpn) >/dev/null 2>&1
+    wget ${GITHUB_CMD}main/BadVPN-UDPWG/ins-badvpn) >/dev/null 2>&1
+    chmod +x ins-badvpn
+    ./ins-badvpn
     apt-get install -y openvpn easy-rsa >/dev/null 2>&1
 
     judge "Installed dropbear"
