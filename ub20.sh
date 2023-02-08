@@ -91,8 +91,16 @@ clear
 LOGO
 echo -e "${RED}JANGAN INSTALL SCRIPT INI MENGGUNAKAN KONEKSI VPN!!!${FONT}"
 echo -e "${YELLOW}CONTOH SSH WS SILAHKAN DI BAWA BUG.MU/FIGHTERTUNNEL${FONT}"
-apt update -y >/dev/null 2>&1
-apt install jq zip unzip p7zip-full -y >/dev/null 2>&1
+judge ""
+
+#dependency_install
+    INS="apt install -y"
+    echo ""
+    echo "Please wait to install Package..."
+    apt update >/dev/null 2>&1
+    apt install jq zip unzip p7zip-full -y >/dev/null 2>&1
+    judge "Update configuration"
+
 
 #AUTO-DOMAIN
 ns_domain="cat /etc/xray/dns"
@@ -140,14 +148,7 @@ clear
     touch /etc/xray/domain
     touch /var/log/xray/access.log
     touch /var/log/xray/error.log
-
-#dependency_install
-    INS="apt install -y"
-    echo ""
-    echo "Please wait to install Package..."
-    apt update >/dev/null 2>&1
-    judge "Update configuration"
-    
+   
     apt clean all >/dev/null 2>&1
     apt autoremove -y >/dev/null 2>&1
     sudo apt update -y >/dev/null 2>&1
