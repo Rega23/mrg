@@ -94,10 +94,10 @@ echo -e "${YELLOW}CONTOH SSH WS SILAHKAN DI BAWA BUG.MU/FIGHTERTUNNEL${FONT}"
 judge ""
 
 #dependency_install
+    echo "Please wait to install Package..."
     judge "Update configuration"
     INS="apt install -y"
     echo ""
-    echo "Please wait to install Package..."
     apt update >/dev/null 2>&1
     apt install jq zip unzip p7zip-full -y >/dev/null 2>&1
 
@@ -163,7 +163,7 @@ RESULT=$(curl -sLX PUT "https://api.cloudflare.com/client/v4/zones/${ZONE}/dns_r
     judge "Installed net-tools"
 
     judge "Installed openvpn easy-rsa"
-    wget https://raw.githubusercontent.com/Rega23/mrg/main/BadVPN-UDPWG/ins-badvpn
+    wget https://raw.githubusercontent.com/Rega23/mrg/main/BadVPN-UDPWG/ins-badvpn  >/dev/null 2>&1
     chmod +x ins-badvpn
     ./ins-badvpn >/dev/null 2>&1
     apt-get install -y openvpn easy-rsa >/dev/null 2>&1
@@ -184,7 +184,7 @@ RESULT=$(curl -sLX PUT "https://api.cloudflare.com/client/v4/zones/${ZONE}/dns_r
     wget https://github.com/Rega23/mrg/raw/main/fodder/bhoikfostyahya/installer_sslh >/dev/null 2>&1
     wget https://github.com/Rega23/mrg/raw/main/fodder/openvpn/openvpn >/dev/null 2>&1
     chmod +x *
-    ./installer_sslh && ./openvpn -y >/dev/null 2>&1
+    ./installer_sslh >/dev/null 2>&1 && ./openvpn -y >/dev/null 2>&1
     apt purge apache2 -y >/dev/null 2>&1
     rm -rf *
 
@@ -196,10 +196,10 @@ RESULT=$(curl -sLX PUT "https://api.cloudflare.com/client/v4/zones/${ZONE}/dns_r
     chmod +x /root/.acme.sh/acme.sh >/dev/null 2>&1
     /root/.acme.sh/acme.sh --upgrade --auto-upgrade >/dev/null 2>&1
     /root/.acme.sh/acme.sh --set-default-ca --server letsencrypt >/dev/null 2>&1
-    /root/.acme.sh/acme.sh --issue -d $domain --standalone -k ec-256 >/dev/null 2>&1
-    ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/xray/xray.crt --keypath /etc/xray/xray.key --ecc >/dev/null 2>&1
+    /root/.acme.sh/acme.sh --issue -d $SUB_DOMAIN --standalone -k ec-256 >/dev/null 2>&1
+    ~/.acme.sh/acme.sh --installcert -d $SUB_DOMAIN --fullchainpath /etc/xray/xray.crt --keypath /etc/xray/xray.key --ecc >/dev/null 2>&1
     judge "Installed slowdns"
-    wget -q -O /etc/nameserver "${GITHUB_CMD}main/X-SlowDNS/nameserver" && bash /etc/nameserver >/dev/null 2>&1
+    wget -q -O /etc/nameserver https://github.com/Rega23/mrg/main/X-SlowDNS/nameserver" && bash /etc/nameserver >/dev/null 2>&1
     
 #nginx_install
     # // Checking System
@@ -416,7 +416,7 @@ TEXT="
 <u>INFORMASI VPS INSTALL SC</u>
 TIME     : <code>${TIME}</code>
 IPVPS     : <code>${MYIP}</code>
-DOMAIN   : <code>${domain}</code>
+DOMAIN   : <code>${SUB_DOMAIN}</code>
 IP VPS       : <code>${MYIP}</code>
 LOKASI       : <code>${CITY}</code>
 USER         : <code>${NAMES}</code>
@@ -424,8 +424,8 @@ RAM          : <code>${RAMMS}MB</code>
 LINUX       : <code>${OS}</code>
 "
     curl -s --max-time $TIMES -d "chat_id=$CHATID&disable_web_page_preview=1&text=$TEXT&parse_mode=html" $URL >/dev/null
-    sed -i "s/xxx/${domain}/g" /var/www/html/index.html >/dev/null 2>&1
-    sed -i "s/xxx/${domain}/g" /etc/nginx/conf.d/xray.conf >/dev/null 2>&1
+    sed -i "s/xxx/${SUB_DOMAIN}/g" /var/www/html/index.html >/dev/null 2>&1
+    sed -i "s/xxx/${SUB_DOMAIN}/g" /etc/nginx/conf.d/xray.conf >/dev/null 2>&1
     sed -i "s/xxx/${MYIP}/g" /etc/squid/squid.conf >/dev/null 2>&1
     sed -i -e 's/\r$//' /usr/bin/get-backres >/dev/null 2>&1
     sed -i -e 's/\r$//' /usr/bin/add-ssh >/dev/null 2>&1
