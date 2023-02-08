@@ -166,7 +166,7 @@ clear
     judge "Installed net-tools"
 
     judge "Installed openvpn easy-rsa"
-    wget https://github.com/Rega23/mrg/main/BadVPN-UDPWG/ins-badvpn)
+    wget https://raw.githubusercontent.com/Rega23/mrg/main/BadVPN-UDPWG/ins-badvpn
     chmod +x ins-badvpn
     ./ins-badvpn
     apt-get install -y openvpn easy-rsa >/dev/null 2>&1
