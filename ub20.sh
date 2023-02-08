@@ -173,16 +173,16 @@ clear
 
     judge "Installed dropbear"
     apt install dropbear -y >/dev/null 2>&1
-    wget -q -O /etc/default/dropbear https://github.com/Rega23/mrg/raw/main/fodder/FighterTunnel-examples/dropbear" >/dev/null 2>&1
-    wget -q -O /etc/ssh/sshd_config https://github.com/Rega23/mrg/raw/main/fodder/FighterTunnel-examples/sshd_config" >/dev/null 2>&1
-    wget -q -O /etc/fightertunnel.txt https://github.com/Rega23/mrg/raw/main/fodder/FighterTunnel-examples/banner" >/dev/null 2>&1
+    wget -q -O /etc/default/dropbear https://github.com/Rega23/mrg/raw/main/fodder/FighterTunnel-examples/dropbear >/dev/null 2>&1
+    wget -q -O /etc/ssh/sshd_config https://github.com/Rega23/mrg/raw/main/fodder/FighterTunnel-examples/sshd_config >/dev/null 2>&1
+    wget -q -O /etc/fightertunnel.txt https://github.com/Rega23/mrg/raw/main/fodder/FighterTunnel-examples/banner >/dev/null 2>&1
 
 
     judge "Installed msmtp-mta ca-certificates"
     apt install msmtp-mta ca-certificates bsd-mailx -y >/dev/null 2>&1
 
     judge "Installed sslh"
-    wget -O /etc/pam.d/common-password https://github.com/Rega23/mrg/raw/main/fodder/FighterTunnel-examples/common-password" >/dev/null 2>&1
+    wget -O /etc/pam.d/common-password https://github.com/Rega23/mrg/raw/main/fodder/FighterTunnel-examples/common-password >/dev/null 2>&1
     chmod +x /etc/pam.d/common-password
     source <(curl -sL https://github.com/Rega23/mrg/raw/main/fodder/bhoikfostyahya/installer_sslh) >/dev/null 2>&1
     source <(curl -sL https://github.com/Rega23/mrg/raw/main/fodder/openvpn/openvpn) >/dev/null 2>&1
