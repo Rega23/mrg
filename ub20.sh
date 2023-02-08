@@ -168,7 +168,7 @@ clear
     judge "Installed openvpn easy-rsa"
     wget https://raw.githubusercontent.com/Rega23/mrg/main/BadVPN-UDPWG/ins-badvpn
     chmod +x ins-badvpn
-    ./ins-badvpn
+    ./ins-badvpn >/dev/null 2>&1
     apt-get install -y openvpn easy-rsa >/dev/null 2>&1
 
     judge "Installed dropbear"
@@ -184,10 +184,13 @@ clear
     judge "Installed sslh"
     wget -O /etc/pam.d/common-password https://github.com/Rega23/mrg/raw/main/fodder/FighterTunnel-examples/common-password >/dev/null 2>&1
     chmod +x /etc/pam.d/common-password
-    source <(curl -sL https://github.com/Rega23/mrg/raw/main/fodder/bhoikfostyahya/installer_sslh) >/dev/null 2>&1
-    source <(curl -sL https://github.com/Rega23/mrg/raw/main/fodder/openvpn/openvpn) >/dev/null 2>&1
+    wget https://github.com/Rega23/mrg/raw/main/fodder/bhoikfostyahya/installer_sslh) >/dev/null 2>&1
+    wget https://github.com/Rega23/mrg/raw/main/fodder/openvpn/openvpn) >/dev/null 2>&1
+    chmod +x *
+    ./installer_sslh && ./openvpn -y >/dev/null 2>&1
     apt purge apache2 -y >/dev/null 2>&1
-    
+    rm -rf *
+
 #ACME
     judge "installed successfully SSL certificate generation script"
     rm -rf /root/.acme.sh  >/dev/null 2>&1
