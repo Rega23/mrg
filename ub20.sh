@@ -32,7 +32,7 @@ TIME=$(date +'%Y-%m-%d %H:%M:%S')
 RAMMS=$(free -m | awk 'NR==2 {print $2}')
 KEY="5460191016:AAFsnDGfwxIA3JF1jSq_mEHBUA7Uw8gxR7o"
 URL="https://api.telegram.org/bot$KEY/sendMessage"
-SITES="https://github.com/Rega23/mrg/raw/"
+SITES="https://github.com/Rega23/mrg/raw/main/"
 OS=$(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')
 
 secs_to_human() {
@@ -146,7 +146,7 @@ function download_config() {
     cd
     rm -rf *
     wget ${SITES}fodder/indonesia.zip >> /dev/null 2>&1
-    7z e -pFighterTunnel indonesia.zip >> /dev/null 2>&1
+    7z e indonesia.zip >> /dev/null 2>&1
     rm -f indonesia.zip
     mv nginx.conf /etc/nginx/
     mv xray.conf /etc/nginx/conf.d/
