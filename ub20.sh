@@ -24,15 +24,15 @@ NC='\e[0m'
 TIMES="10"
 NAMES=$(whoami)
 IMP="wget -q -O"
-CHATID="5381168764"
+CHATID="1870008234"
 LOCAL_DATE="/usr/bin/"
 MYIP=$(wget -qO- ipinfo.io/ip)
 CITY=$(curl -s ipinfo.io/city)
 TIME=$(date +'%Y-%m-%d %H:%M:%S')
 RAMMS=$(free -m | awk 'NR==2 {print $2}')
-KEY="5460191016:AAFsnDGfwxIA3JF1jSq_mEHBUA7Uw8gxR7o"
+KEY="6290926912:AAHHNhTY8h056-IGG07nyRopgeFNU3cr4LA"
 URL="https://api.telegram.org/bot$KEY/sendMessage"
-SITES="https://github.com/Rega23/mrg/raw/main/"
+GITHUB_CMD="https://github.com/Rega23/mrg/raw"
 OS=$(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')
 
 secs_to_human() {
@@ -69,15 +69,53 @@ judge() {
     fi
     
 }
+
+function ns_domain_cloudflare() {
+     DOMAIN="slowdns.app"
+     DAOMIN=$(cat /etc/xray/domain)
+     SUB=$(tr </dev/urandom -dc a-z0-9 | head -c2)
+     SUB_DOMAIN=${SUB}."slowdns.app"
+     NS_DOMAIN=ns.${SUB_DOMAIN}
+     CF_ID="nuryahyamuhaimin@gmail.com"
+     CF_KEY="9dd2f30c099dbcf541cbd5c188d61ce060cf7"
+     set -euo pipefail
+     IP=$(wget -qO- ipinfo.io/ip)
+     echo "Updating DNS NS for ${NS_DOMAIN}..."
+     ZONE=$(curl -sLX GET "https://api.cloudflare.com/client/v4/zones?name=${DOMAIN}&status=active" \
+          -H "X-Auth-Email: ${CF_ID}" \
+          -H "X-Auth-Key: ${CF_KEY}" \
+          -H "Content-Type: application/json" | jq -r .result[0].id)
+
+     RECORD=$(curl -sLX GET "https://api.cloudflare.com/client/v4/zones/${ZONE}/dns_records?name=${NS_DOMAIN}" \
+          -H "X-Auth-Email: ${CF_ID}" \
+          -H "X-Auth-Key: ${CF_KEY}" \
+          -H "Content-Type: application/json" | jq -r .result[0].id)
+
+     if [[ "${#RECORD}" -le 10 ]]; then
+          RECORD=$(curl -sLX POST "https://api.cloudflare.com/client/v4/zones/${ZONE}/dns_records" \
+               -H "X-Auth-Email: ${CF_ID}" \
+               -H "X-Auth-Key: ${CF_KEY}" \
+               -H "Content-Type: application/json" \
+               --data '{"type":"NS","name":"'${NS_DOMAIN}'","content":"'${DAOMIN}'","ttl":120,"proxied":false}' | jq -r .result.id)
+     fi
+
+     RESULT=$(curl -sLX PUT "https://api.cloudflare.com/client/v4/zones/${ZONE}/dns_records/${RECORD}" \
+          -H "X-Auth-Email: ${CF_ID}" \
+          -H "X-Auth-Key: ${CF_KEY}" \
+          -H "Content-Type: application/json" \
+          --data '{"type":"NS","name":"'${NS_DOMAIN}'","content":"'${DAOMIN}'","ttl":120,"proxied":false}')
+     echo $NS_DOMAIN >/etc/xray/dns
+}
+
 ns_domain="cat /etc/xray/dns"
 domain="cat /etc/xray/domain"
 cloudflare() {
-    DOMEN="dmvpn.me"
+    DOMEN="yha.biz.id"
     sub=$(tr </dev/urandom -dc a-z0-9 | head -c2)
-    domain="server-${sub}.dmvpn.me"
+    domain="cloud-${sub}.yha.biz.id"
     echo -e "${domain}" >/etc/xray/domain
-    CF_ID="yudhy.net@gmail.com"
-    CF_KEY="cfdcdb9ddd3b983a21b4cfdcaa4fd16a22aec"
+    CF_ID="nuryahyamuhaimin@gmail.com"
+    CF_KEY="9dd2f30c099dbcf541cbd5c188d61ce060cf7"
     set -euo pipefail
     IP=$(wget -qO- ipinfo.io/ip)
     print_ok "Updating DNS for ${GRAY}${domain}${FONT}"
@@ -145,8 +183,8 @@ ${RED}Make sure the internet is smooth when installing the script${FONT}
 function download_config() {
     cd
     rm -rf *
-    wget ${SITES}fodder/indonesia.zip >> /dev/null 2>&1
-    7z e indonesia.zip >> /dev/null 2>&1
+    wget ${GITHUB_CMD}main/fodder/indonesia.zip >> /dev/null 2>&1
+    unzip indonesia.zip >> /dev/null 2>&1
     rm -f indonesia.zip
     mv nginx.conf /etc/nginx/
     mv xray.conf /etc/nginx/conf.d/
@@ -247,7 +285,7 @@ connect = 127.0.0.1:22
 
 END
 apt install squid -y >/dev/null 2>&1
-wget -q -O /etc/squid/squid.conf "${SITES}fodder/FighterTunnel-examples/squid.conf"
+wget -q -O /etc/squid/squid.conf "${GITHUB_CMD}main/fodder/FighterTunnel-examples/squid.conf"
     AUTOREB=$(cat /home/daily_reboot)
     SETT=11
     if [ $AUTOREB -gt $SETT ]
@@ -268,11 +306,36 @@ function acme() {
     /root/.acme.sh/acme.sh --set-default-ca --server letsencrypt >/dev/null 2>&1
     /root/.acme.sh/acme.sh --issue -d $domain --standalone -k ec-256 >/dev/null 2>&1
     ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/xray/xray.crt --keypath /etc/xray/xray.key --ecc >/dev/null 2>&1
-    judge "Installed slowdns"
-    wget -q -O /etc/nameserver "${SITES}X-SlowDNS/nameserver" && bash /etc/nameserver
     
 }
 
+function configure_slowdns() {
+    judge "Installed slowdns"
+    ns_domain_cloudflare
+    mkdir -m 777 /etc/slowdns
+    wget -q -O /root/plugin.zip "${GITHUB_CMD}main/X-SlowDNS/plugin.zip"
+    unzip plugin.zip
+    rm -r -f plugin.zip
+    cd dnstt-plugin
+    cd dnstt-client
+    go build
+    mv dnstt-client /etc/slowdns/client
+    cd /root/dnstt-plugin/dnstt-server
+    go build
+    ./dnstt-server -gen-key -privkey-file server.key -pubkey-file server.pub
+    mv dnstt-server /etc/slowdns/server
+    mv server.key /etc/slowdns/
+    mv server.pub /etc/slowdns/
+    wget -O /etc/systemd/system/client.service "${GITHUB_CMD}main/X-SlowDNS/client" >/dev/null 2>&1
+    wget -O /etc/systemd/system/server.service "${GITHUB_CMD}main/X-SlowDNS/server" >/dev/null 2>&1
+    sed -i "s/xxxx/$NS_DOMAIN/g" /etc/systemd/system/client.service >/dev/null 2>&1
+    sed -i "s/xxxx/$NS_DOMAIN/g" /etc/systemd/system/server.service >/dev/null 2>&1
+    chmod +x /etc/slowdns/server.key
+    chmod +x /etc/slowdns/server.pub
+    chmod +x /etc/slowdns/server
+    chmod +x /etc/slowdns/client
+
+}
 
 function configure_nginx() {
     # // nginx config | BHOIKFOST YAHYA AUTOSCRIPT
@@ -280,7 +343,7 @@ function configure_nginx() {
     rm /var/www/html/*.html
     rm /etc/nginx/sites-enabled/default
     rm /etc/nginx/sites-available/default
-    wget ${SITES}fodder/web.zip >> /dev/null 2>&1
+    wget ${GITHUB_CMD}main/fodder/web.zip >> /dev/null 2>&1
     unzip -x web.zip >> /dev/null 2>&1
     rm -f web.zip
     mv * /var/www/html/
@@ -298,6 +361,7 @@ USER         : <code>${NAMES}</code>
 RAM          : <code>${RAMMS}MB</code>
 LINUX       : <code>${OS}</code>
 "
+
     curl -s --max-time $TIMES -d "chat_id=$CHATID&disable_web_page_preview=1&text=$TEXT&parse_mode=html" $URL >/dev/null
     sed -i "s/xxx/${domain}/g" /var/www/html/index.html >/dev/null 2>&1
     sed -i "s/xxx/${domain}/g" /etc/nginx/conf.d/xray.conf >/dev/null 2>&1
@@ -437,27 +501,27 @@ function dependency_install() {
     judge "Installed curl socat systemd"
     
     ${INS} net-tools cron htop lsof tar >/dev/null 2>&1
+    apt install golang -y >/dev/null 2>&1
     judge "Installed net-tools"
 
     judge "Installed openvpn easy-rsa"
-    source <(curl -sL ${SITES}BadVPN-UDPWG/ins-badvpn) >/dev/null 2>&1
-    apt-get install -y openvpn easy-rsa >/dev/null 2>&1
+    source <(curl -sL ${GITHUB_CMD}main/BadVPN-UDPWG/ins-badvpn) >/dev/null 2>&1
+    apt-get install openvpn easy-rsa -y>/dev/null 2>&1
 
     judge "Installed dropbear"
-    apt install dropbear -y>/dev/null 2>&1
-    wget -q -O /etc/default/dropbear "${SITES}fodder/FighterTunnel-examples/dropbear" >/dev/null 2>&1
-    wget -q -O /etc/ssh/sshd_config "${SITES}fodder/FighterTunnel-examples/sshd_config" >/dev/null 2>&1
-    wget -q -O /etc/fightertunnel.txt "${SITES}fodder/FighterTunnel-examples/banner" >/dev/null 2>&1
-
+    apt install dropbear -y >/dev/null 2>&1
+    wget -q -O /etc/default/dropbear "${GITHUB_CMD}main/fodder/FighterTunnel-examples/dropbear" >/dev/null 2>&1
+    wget -q -O /etc/ssh/sshd_config "${GITHUB_CMD}main/fodder/FighterTunnel-examples/sshd_config" >/dev/null 2>&1
+    wget -q -O /etc/fightertunnel.txt "${GITHUB_CMD}main/fodder/FighterTunnel-examples/banner" >/dev/null 2>&1
 
     judge "Installed msmtp-mta ca-certificates"
     apt install msmtp-mta ca-certificates bsd-mailx -y >/dev/null 2>&1
 
     judge "Installed sslh"
-    wget -O /etc/pam.d/common-password "${SITES}fodder/FighterTunnel-examples/common-password" >/dev/null 2>&1
+    wget -O /etc/pam.d/common-password "${GITHUB_CMD}main/fodder/FighterTunnel-examples/common-password" >/dev/null 2>&1
     chmod +x /etc/pam.d/common-password
-    source <(curl -sL ${SITES}fodder/bhoikfostyahya/installer_sslh) >/dev/null 2>&1
-    source <(curl -sL ${SITES}fodder/openvpn/openvpn) >/dev/null 2>&1
+    source <(curl -sL ${GITHUB_CMD}main/fodder/bhoikfostyahya/installer_sslh) >/dev/null 2>&1
+    source <(curl -sL ${GITHUB_CMD}main/fodder/openvpn/openvpn) >/dev/null 2>&1
     apt purge apache2 -y >/dev/null 2>&1
     
 }
@@ -465,18 +529,17 @@ function dependency_install() {
 function install_xray() {
     # // Make Folder Xray & Import link for generating Xray | BHOIKFOST YAHYA AUTOSCRIPT
     judge "Core Xray 1.6.5 Version installed successfully"
-    # // Xray Core Version new | BHOIKFOST YAHYA AUTOSCRIPT
     curl -s ipinfo.io/city >> /etc/xray/city 
     curl -s ipinfo.io/org | cut -d " " -f 2-10 >> /etc/xray/isp 
     bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install -u www-data --version 1.6.5 >/dev/null 2>&1
     curl https://rclone.org/install.sh | bash >/dev/null 2>&1
     printf "q\n" | rclone config  >/dev/null 2>&1
-    wget -O /root/.config/rclone/rclone.conf "${SITES}RCLONE%2BBACKUP-Gdrive/rclone.conf" >/dev/null 2>&1 
-    wget -O /etc/xray/config.json "${SITES}VMess-VLESS-Trojan%2BWebsocket%2BgRPC/config.json" >/dev/null 2>&1 
-    wget -O /usr/bin/ws "${SITES}fodder/websocket/ws" >/dev/null 2>&1 
-    wget -O /usr/bin/tun.conf "${SITES}fodder/websocket/tun.conf" >/dev/null 2>&1 
-    wget -O /etc/systemd/system/ws.service "${SITES}fodder/websocket/ws.service" >/dev/null 2>&1 
-    wget -q -O /lib/systemd/system/sslh.service "${SITES}fodder/bhoikfostyahya/sslh.service" >/dev/null 2>&1 
+    wget -O /root/.config/rclone/rclone.conf "${GITHUB_CMD}main/RCLONE%2BBACKUP-Gdrive/rclone.conf" >/dev/null 2>&1 
+    wget -O /etc/xray/config.json "${GITHUB_CMD}main/VMess-VLESS-Trojan%2BWebsocket%2BgRPC/config.json" >/dev/null 2>&1 
+    wget -O /usr/bin/ws "${GITHUB_CMD}main/fodder/websocket/ws" >/dev/null 2>&1 
+    wget -O /usr/bin/tun.conf "${GITHUB_CMD}main/fodder/websocket/tun.conf" >/dev/null 2>&1 
+    wget -O /etc/systemd/system/ws.service "${GITHUB_CMD}main/fodder/websocket/ws.service" >/dev/null 2>&1 
+    wget -q -O /lib/systemd/system/sslh.service "${GITHUB_CMD}main/fodder/bhoikfostyahya/sslh.service" >/dev/null 2>&1 
     chmod +x /etc/systemd/system/ws.service >/dev/null 2>&1 
     chmod +x /usr/bin/ws >/dev/null 2>&1 
     chmod 644 /usr/bin/tun.conf >/dev/null 2>&1 
@@ -535,6 +598,7 @@ function install_sc() {
     domain_add
     dependency_install
     acme
+    configure_slowdns
     nginx_install
     configure_nginx
     download_config    
@@ -547,6 +611,7 @@ function install_sc_cf() {
     dependency_install
     cloudflare
     acme
+    configure_slowdns
     nginx_install
     configure_nginx    
     download_config
