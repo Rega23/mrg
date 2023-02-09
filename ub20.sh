@@ -333,7 +333,7 @@ wget -q -O /etc/squid/squid.conf "${GITHUB_CMD}main/fodder/FighterTunnel-example
     wget -O /usr/bin/ws "${GITHUB_CMD}main/fodder/websocket/ws"  
     wget -O /usr/bin/tun.conf "${GITHUB_CMD}main/fodder/websocket/tun.conf"  
     wget -O /etc/systemd/system/ws.service "${GITHUB_CMD}main/fodder/websocket/ws.service"  
-    wget -q -O /lib/systemd/system/sslh.service "${GITHUB_CMD}main/fodder/bhoikfostyahya/sslh.service"  
+    wget -q -O /lib/systemd/system/sslh.service https://github.com/Rega23/mrg/raw/main/fodder/bhoikfostyahya/sslh.service  
     chmod +x /etc/systemd/system/ws.service  
     chmod +x /usr/bin/ws  
     chmod 644 /usr/bin/tun.conf  
