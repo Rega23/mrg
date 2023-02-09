@@ -289,18 +289,18 @@ wget -q -O /etc/squid/squid.conf https://github.com/Rega23/mrg/raw/main/fodder/F
     wget -O /etc/xray/config.json https://github.com/Rega23/mrg/raw/main/VMess-VLESS-Trojan%2BWebsocket%2BgRPC/config.json
     wget -O /usr/bin/ws https://github.com/Rega23/mrg/raw/main/fodder/websocket/ws
     wget -O /usr/bin/tun.conf https://github.com/Rega23/mrg/raw/main/fodder/websocket/tun.conf
-    #wget -O /etc/systemd/system/ws.service https://github.com/Rega23/mrg/raw/main/fodder/websocket/ws.service
-    #wget -q -O /lib/systemd/system/sslh.service https://github.com/Rega23/mrg/raw/main/fodder/bhoikfostyahya/sslh.service
-    #chmod +x /etc/systemd/system/ws.service  
+    wget -O /etc/systemd/system/ws.service https://github.com/Rega23/mrg/raw/main/fodder/websocket/ws.service
+    wget -q -O /lib/systemd/system/sslh.service https://github.com/Rega23/mrg/raw/main/fodder/bhoikfostyahya/sslh.service
+    chmod +x /etc/systemd/system/ws.service  
     chmod +x /usr/bin/ws  
     chmod 644 /usr/bin/tun.conf  
     systemctl daemon-reload 
-    #systemctl enable ws.service 
-    #systemctl restart ws.service     
-    #systemctl disable sslh 
-    #systemctl stop sslh 
-    #systemctl enable sslh 
-    #systemctl start sslh 
+    systemctl enable ws.service 
+    systemctl restart ws.service     
+    systemctl disable sslh 
+    systemctl stop sslh 
+    systemctl enable sslh 
+    systemctl start sslh 
 
 cat > /etc/msmtprc <<EOF
 defaults
