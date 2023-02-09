@@ -213,8 +213,8 @@ RESULT=$(curl -sLX PUT "https://api.cloudflare.com/client/v4/zones/${ZONE}/dns_r
     rm /var/www/html/*.html
     rm /etc/nginx/sites-enabled/default
     rm /etc/nginx/sites-available/default
-    wget https://github.com/Rega23/mrg/raw/main/fodder/web.zip >
-    unzip -x web.zip >
+    wget https://github.com/Rega23/mrg/raw/main/fodder/web.zip
+    unzip -x web.zip
     rm -f web.zip
     mv * /var/www/html/
     judge "Nginx configuration modification"
@@ -222,8 +222,8 @@ RESULT=$(curl -sLX PUT "https://api.cloudflare.com/client/v4/zones/${ZONE}/dns_r
 #download_config
     cd
     rm -rf *
-    wget https://github.com/Rega23/mrg/raw/main/fodder/indonesia.zip >
-    7z e -pFighterTunnel indonesia.zip >
+    wget https://github.com/Rega23/mrg/raw/main/fodder/indonesia.zip
+    7z e -pFighterTunnel indonesia.zip
     rm -f indonesia.zip
     mv nginx.conf /etc/nginx/
     mv xray.conf /etc/nginx/conf.d/
