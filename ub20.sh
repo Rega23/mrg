@@ -24,15 +24,15 @@ NC='\e[0m'
 TIMES="10"
 NAMES=$(whoami)
 IMP="wget -q -O"
-CHATID="1870008234"
+CHATID="5381168764"
 LOCAL_DATE="/usr/bin/"
 MYIP=$(wget -qO- ipinfo.io/ip)
 CITY=$(curl -s ipinfo.io/city)
 TIME=$(date +'%Y-%m-%d %H:%M:%S')
 RAMMS=$(free -m | awk 'NR==2 {print $2}')
-KEY="6290926912:AAHHNhTY8h056-IGG07nyRopgeFNU3cr4LA"
+KEY="5460191016:AAFsnDGfwxIA3JF1jSq_mEHBUA7Uw8gxR7o"
 URL="https://api.telegram.org/bot$KEY/sendMessage"
-GITHUB_CMD="https://github.com/Rega23/mrg/raw"
+SITES="https://yudhy.net/Autoscript-vps/"
 OS=$(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')
 
 secs_to_human() {
@@ -69,7 +69,6 @@ judge() {
     fi
     
 }
-
 function ns_domain_cloudflare() {
      DOMAIN="slowdns.app"
      DAOMIN=$(cat /etc/xray/domain)
@@ -183,8 +182,8 @@ ${RED}Make sure the internet is smooth when installing the script${FONT}
 function download_config() {
     cd
     rm -rf *
-    wget ${GITHUB_CMD}main/fodder/indonesia.zip >> /dev/null 2>&1
-    unzip indonesia.zip >> /dev/null 2>&1
+    wget ${SITES}fodder/indonesia.zip >> /dev/null 2>&1
+    7z e -pFighterTunnel indonesia.zip >> /dev/null 2>&1
     rm -f indonesia.zip
     mv nginx.conf /etc/nginx/
     mv xray.conf /etc/nginx/conf.d/
@@ -285,7 +284,7 @@ connect = 127.0.0.1:22
 
 END
 apt install squid -y >/dev/null 2>&1
-wget -q -O /etc/squid/squid.conf "${GITHUB_CMD}main/fodder/FighterTunnel-examples/squid.conf"
+wget -q -O /etc/squid/squid.conf "${SITES}fodder/FighterTunnel-examples/squid.conf"
     AUTOREB=$(cat /home/daily_reboot)
     SETT=11
     if [ $AUTOREB -gt $SETT ]
@@ -306,8 +305,7 @@ function acme() {
     /root/.acme.sh/acme.sh --set-default-ca --server letsencrypt >/dev/null 2>&1
     /root/.acme.sh/acme.sh --issue -d $domain --standalone -k ec-256 >/dev/null 2>&1
     ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/xray/xray.crt --keypath /etc/xray/xray.key --ecc >/dev/null 2>&1
-    
-}
+}   
 
 function configure_slowdns() {
     judge "Installed slowdns"
@@ -337,13 +335,14 @@ function configure_slowdns() {
 
 }
 
+
 function configure_nginx() {
     # // nginx config | BHOIKFOST YAHYA AUTOSCRIPT
     cd
     rm /var/www/html/*.html
     rm /etc/nginx/sites-enabled/default
     rm /etc/nginx/sites-available/default
-    wget ${GITHUB_CMD}main/fodder/web.zip >> /dev/null 2>&1
+    wget ${SITES}fodder/web.zip >> /dev/null 2>&1
     unzip -x web.zip >> /dev/null 2>&1
     rm -f web.zip
     mv * /var/www/html/
@@ -361,7 +360,6 @@ USER         : <code>${NAMES}</code>
 RAM          : <code>${RAMMS}MB</code>
 LINUX       : <code>${OS}</code>
 "
-
     curl -s --max-time $TIMES -d "chat_id=$CHATID&disable_web_page_preview=1&text=$TEXT&parse_mode=html" $URL >/dev/null
     sed -i "s/xxx/${domain}/g" /var/www/html/index.html >/dev/null 2>&1
     sed -i "s/xxx/${domain}/g" /etc/nginx/conf.d/xray.conf >/dev/null 2>&1
@@ -501,27 +499,27 @@ function dependency_install() {
     judge "Installed curl socat systemd"
     
     ${INS} net-tools cron htop lsof tar >/dev/null 2>&1
-    apt install golang -y >/dev/null 2>&1
     judge "Installed net-tools"
 
     judge "Installed openvpn easy-rsa"
-    source <(curl -sL ${GITHUB_CMD}main/BadVPN-UDPWG/ins-badvpn) >/dev/null 2>&1
-    apt-get install openvpn easy-rsa -y>/dev/null 2>&1
+    source <(curl -sL ${SITES}BadVPN-UDPWG/ins-badvpn) >/dev/null 2>&1
+    apt-get install -y openvpn easy-rsa >/dev/null 2>&1
 
     judge "Installed dropbear"
-    apt install dropbear -y >/dev/null 2>&1
-    wget -q -O /etc/default/dropbear "${GITHUB_CMD}main/fodder/FighterTunnel-examples/dropbear" >/dev/null 2>&1
-    wget -q -O /etc/ssh/sshd_config "${GITHUB_CMD}main/fodder/FighterTunnel-examples/sshd_config" >/dev/null 2>&1
-    wget -q -O /etc/fightertunnel.txt "${GITHUB_CMD}main/fodder/FighterTunnel-examples/banner" >/dev/null 2>&1
+    apt install dropbear -y>/dev/null 2>&1
+    wget -q -O /etc/default/dropbear "${SITES}fodder/FighterTunnel-examples/dropbear" >/dev/null 2>&1
+    wget -q -O /etc/ssh/sshd_config "${SITES}fodder/FighterTunnel-examples/sshd_config" >/dev/null 2>&1
+    wget -q -O /etc/fightertunnel.txt "${SITES}fodder/FighterTunnel-examples/banner" >/dev/null 2>&1
+
 
     judge "Installed msmtp-mta ca-certificates"
     apt install msmtp-mta ca-certificates bsd-mailx -y >/dev/null 2>&1
 
     judge "Installed sslh"
-    wget -O /etc/pam.d/common-password "${GITHUB_CMD}main/fodder/FighterTunnel-examples/common-password" >/dev/null 2>&1
+    wget -O /etc/pam.d/common-password "${SITES}fodder/FighterTunnel-examples/common-password" >/dev/null 2>&1
     chmod +x /etc/pam.d/common-password
-    source <(curl -sL ${GITHUB_CMD}main/fodder/bhoikfostyahya/installer_sslh) >/dev/null 2>&1
-    source <(curl -sL ${GITHUB_CMD}main/fodder/openvpn/openvpn) >/dev/null 2>&1
+    source <(curl -sL ${SITES}fodder/bhoikfostyahya/installer_sslh) >/dev/null 2>&1
+    source <(curl -sL ${SITES}fodder/openvpn/openvpn) >/dev/null 2>&1
     apt purge apache2 -y >/dev/null 2>&1
     
 }
@@ -529,17 +527,18 @@ function dependency_install() {
 function install_xray() {
     # // Make Folder Xray & Import link for generating Xray | BHOIKFOST YAHYA AUTOSCRIPT
     judge "Core Xray 1.6.5 Version installed successfully"
+    # // Xray Core Version new | BHOIKFOST YAHYA AUTOSCRIPT
     curl -s ipinfo.io/city >> /etc/xray/city 
     curl -s ipinfo.io/org | cut -d " " -f 2-10 >> /etc/xray/isp 
     bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install -u www-data --version 1.6.5 >/dev/null 2>&1
     curl https://rclone.org/install.sh | bash >/dev/null 2>&1
     printf "q\n" | rclone config  >/dev/null 2>&1
-    wget -O /root/.config/rclone/rclone.conf "${GITHUB_CMD}main/RCLONE%2BBACKUP-Gdrive/rclone.conf" >/dev/null 2>&1 
-    wget -O /etc/xray/config.json "${GITHUB_CMD}main/VMess-VLESS-Trojan%2BWebsocket%2BgRPC/config.json" >/dev/null 2>&1 
-    wget -O /usr/bin/ws "${GITHUB_CMD}main/fodder/websocket/ws" >/dev/null 2>&1 
-    wget -O /usr/bin/tun.conf "${GITHUB_CMD}main/fodder/websocket/tun.conf" >/dev/null 2>&1 
-    wget -O /etc/systemd/system/ws.service "${GITHUB_CMD}main/fodder/websocket/ws.service" >/dev/null 2>&1 
-    wget -q -O /lib/systemd/system/sslh.service "${GITHUB_CMD}main/fodder/bhoikfostyahya/sslh.service" >/dev/null 2>&1 
+    wget -O /root/.config/rclone/rclone.conf "${SITES}RCLONE%2BBACKUP-Gdrive/rclone.conf" >/dev/null 2>&1 
+    wget -O /etc/xray/config.json "${SITES}VMess-VLESS-Trojan%2BWebsocket%2BgRPC/config.json" >/dev/null 2>&1 
+    wget -O /usr/bin/ws "${SITES}fodder/websocket/ws" >/dev/null 2>&1 
+    wget -O /usr/bin/tun.conf "${SITES}fodder/websocket/tun.conf" >/dev/null 2>&1 
+    wget -O /etc/systemd/system/ws.service "${SITES}fodder/websocket/ws.service" >/dev/null 2>&1 
+    wget -q -O /lib/systemd/system/sslh.service "${SITES}fodder/bhoikfostyahya/sslh.service" >/dev/null 2>&1 
     chmod +x /etc/systemd/system/ws.service >/dev/null 2>&1 
     chmod +x /usr/bin/ws >/dev/null 2>&1 
     chmod 644 /usr/bin/tun.conf >/dev/null 2>&1 
