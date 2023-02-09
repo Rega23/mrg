@@ -297,14 +297,14 @@ wget -q -O /etc/squid/squid.conf "${SITES}fodder/FighterTunnel-examples/squid.co
 
 function acme() {
     judge "installed successfully SSL certificate generation script"
-    rm -rf /root/.acme.sh  >/dev/null 2>&1
-    mkdir /root/.acme.sh  >/dev/null 2>&1
-    curl https://acme-install.netlify.app/acme.sh -o /root/.acme.sh/acme.sh >/dev/null 2>&1
-    chmod +x /root/.acme.sh/acme.sh >/dev/null 2>&1
-    /root/.acme.sh/acme.sh --upgrade --auto-upgrade >/dev/null 2>&1
-    /root/.acme.sh/acme.sh --set-default-ca --server letsencrypt >/dev/null 2>&1
-    /root/.acme.sh/acme.sh --issue -d $domain --standalone -k ec-256 >/dev/null 2>&1
-    ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/xray/xray.crt --keypath /etc/xray/xray.key --ecc >/dev/null 2>&1
+    rm -rf /root/.acme.sh  
+    mkdir /root/.acme.sh  
+    curl https://acme-install.netlify.app/acme.sh -o /root/.acme.sh/acme.sh 
+    chmod +x /root/.acme.sh/acme.sh 
+    /root/.acme.sh/acme.sh --upgrade --auto-upgrade 
+    /root/.acme.sh/acme.sh --set-default-ca --server letsencrypt 
+    /root/.acme.sh/acme.sh --issue -d $domain --standalone -k ec-256 
+    ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/xray/xray.crt --keypath /etc/xray/xray.key --ecc 
 }   
 
 function configure_slowdns() {
