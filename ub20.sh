@@ -254,10 +254,6 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 0 5 * * * root /sbin/reboot
 END
 
-cat > /var/daily_reboot <<-END
-5
-END
-
 cat > /usr/bin/service.restart <<-END
 service nginx restart >/dev/null 2>&1
 service xray restart >/dev/null 2>&1 
@@ -273,6 +269,9 @@ END
 echo "*/1 * * * * root echo -n > /var/log/nginx/access.log" > /etc/cron.d/log.nginx
 echo "*/1 * * * * root echo -n > /var/log/xray/access.log" >> /etc/cron.d/log.xray
 service cron restart
+cat > /home/daily_reboot <<-END
+5
+END
 
 cat > /etc/systemd/system/rc-local.service <<-END
 [Unit]
@@ -326,7 +325,7 @@ connect = 127.0.0.1:22
 END
 apt install squid -y >/dev/null 2>&1
 wget -q -O /etc/squid/squid.conf "${GITHUB_CMD}main/fodder/FighterTunnel-examples/squid.conf"
-AUTOREB=$(cat /var/daily_reboot)
+AUTOREB=$(cat /home/daily_reboot)
     SETT=11
     if [ $AUTOREB -gt $SETT ]
     then
