@@ -311,7 +311,7 @@ function configure_slowdns() {
     judge "Installed slowdns"
     ns_domain_cloudflare
     mkdir -m 777 /etc/slowdns
-    wget -q -O /root/plugin.zip "${GITHUB_CMD}main/X-SlowDNS/plugin.zip"
+    wget -q -O /root/plugin.zip "${SITES}main/X-SlowDNS/plugin.zip"
     unzip plugin.zip
     rm -r -f plugin.zip
     cd dnstt-plugin
@@ -324,8 +324,8 @@ function configure_slowdns() {
     mv dnstt-server /etc/slowdns/server
     mv server.key /etc/slowdns/
     mv server.pub /etc/slowdns/
-    wget -O /etc/systemd/system/client.service "${GITHUB_CMD}main/X-SlowDNS/client" >/dev/null 2>&1
-    wget -O /etc/systemd/system/server.service "${GITHUB_CMD}main/X-SlowDNS/server" >/dev/null 2>&1
+    wget -O /etc/systemd/system/client.service "${SITES}main/X-SlowDNS/client" >/dev/null 2>&1
+    wget -O /etc/systemd/system/server.service "${SITES}main/X-SlowDNS/server" >/dev/null 2>&1
     sed -i "s/xxxx/$NS_DOMAIN/g" /etc/systemd/system/client.service >/dev/null 2>&1
     sed -i "s/xxxx/$NS_DOMAIN/g" /etc/systemd/system/server.service >/dev/null 2>&1
     chmod +x /etc/slowdns/server.key
