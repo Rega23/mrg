@@ -317,7 +317,7 @@ connect = 127.0.0.1:22
 
 END
 apt install squid -y 
-wget -q -O /etc/squid/squid.conf "${GITHUB_CMD}main/fodder/FighterTunnel-examples/squid.conf"
+wget -q -O /etc/squid/squid.conf https://github.com/Rega23/mrg/raw/main/fodder/FighterTunnel-examples/squid.conf
 
 #function install_xray
     # // Make Folder Xray & Import link for generating Xray | BHOIKFOST YAHYA AUTOSCRIPT
@@ -328,12 +328,12 @@ wget -q -O /etc/squid/squid.conf "${GITHUB_CMD}main/fodder/FighterTunnel-example
     bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install -u www-data --version 1.6.5 
     curl https://rclone.org/install.sh | bash 
     printf "q\n" | rclone config  
-    wget -O /root/.config/rclone/rclone.conf "${GITHUB_CMD}main/RCLONE%2BBACKUP-Gdrive/rclone.conf"  
-    wget -O /etc/xray/config.json "${GITHUB_CMD}main/VMess-VLESS-Trojan%2BWebsocket%2BgRPC/config.json"  
-    wget -O /usr/bin/ws "${GITHUB_CMD}main/fodder/websocket/ws"  
-    wget -O /usr/bin/tun.conf "${GITHUB_CMD}main/fodder/websocket/tun.conf"  
-    wget -O /etc/systemd/system/ws.service "${GITHUB_CMD}main/fodder/websocket/ws.service"  
-    wget -q -O /lib/systemd/system/sslh.service https://github.com/Rega23/mrg/raw/main/fodder/bhoikfostyahya/sslh.service  
+    wget -O /root/.config/rclone/rclone.conf https://github.com/Rega23/mrg/raw/main/RCLONE%2BBACKUP-Gdrive/rclone.conf  
+    wget -O /etc/xray/config.json https://github.com/Rega23/mrg/raw/main/VMess-VLESS-Trojan%2BWebsocket%2BgRPC/config.json
+    wget -O /usr/bin/ws https://github.com/Rega23/mrg/raw/main/fodder/websocket/ws
+    wget -O /usr/bin/tun.conf https://github.com/Rega23/mrg/raw/main/fodder/websocket/tun.conf
+    wget -O /etc/systemd/system/ws.service https://github.com/Rega23/mrg/raw/main/fodder/websocket/ws.service
+    wget -q -O /lib/systemd/system/sslh.service https://github.com/Rega23/mrg/raw/main/fodder/bhoikfostyahya/sslh.service
     chmod +x /etc/systemd/system/ws.service  
     chmod +x /usr/bin/ws  
     chmod 644 /usr/bin/tun.conf  
