@@ -45,30 +45,7 @@ function print_ok() {
     echo -e "${OK} ${BLUE} $1 ${FONT}"
 }
 
-function print_error() {
-    echo -e "${ERROR} ${REDBG} $1 ${FONT}"
-}
 
-function is_root() {
-    if [[ 0 == "$UID" ]]; then
-        print_ok "Root user Start installation process"
-    else
-        print_error "The current user is not the root user, please switch to the root user and run the script again"
-        # // exit 1
-    fi
-    
-}
-
-judge() {
-    if [[ 0 -eq $? ]]; then
-        print_ok "$1 Complete... | thx to ${YELLOW}bhoikfostyahya${FONT}"
-        sleep 1
-    else
-        print_error "$1 Fail... | thx to ${YELLOW}bhoikfostyahya${FONT}"
-        # // exit 1
-    fi
-    
-}
 
 clear
 
@@ -85,7 +62,6 @@ function LOGO() {
            ${RED}no licence script (free lifetime) ${FONT}
 ${RED}Make sure the internet is smooth when installing the script${FONT}
         "
-    
 }
 
 # // Prevent the default bin directory of some system xray from missing | BHOIKFOST YAHYA AUTOSCRIPT
@@ -93,17 +69,14 @@ clear
 LOGO
 echo -e "${RED}JANGAN INSTALL SCRIPT INI MENGGUNAKAN KONEKSI VPN!!!${FONT}"
 echo -e "${YELLOW}CONTOH SSH WS SILAHKAN DI BAWA BUG.MU/FIGHTERTUNNEL${FONT}"
-judge ""
 
 #dependency_install
     echo "Please wait to install Package..."
     INS="apt install -y"
     apt update 
     apt install jq zip unzip p7zip-full -y 
-    judge "Update configuration"
-
+    
 #AUTO-DOMAIN
-judge "Setting Auto Domain"
 ns_domain="cat /etc/xray/dns"
 SUB_DOMAIN="cat /etc/xray/domain"
 DOMAIN=arshaka.tech
@@ -152,34 +125,25 @@ RESULT=$(curl -sLX PUT "https://api.cloudflare.com/client/v4/zones/${ZONE}/dns_r
     sudo apt dist-upgrade -y 
     sudo apt-get remove --purge ufw firewalld -y 
     sudo apt-get remove --purge exim4 -y 
-    judge "Clean configuration"
     
     #${INS} jq zip unzip p7zip-full 
-    #judge "Installed successfully jq zip unzip"
     
     ${INS} make curl socat systemd libpcre3 libpcre3-dev zlib1g-dev openssl libssl-dev 
-    judge "Installed curl socat systemd"
     
     ${INS} net-tools cron htop lsof tar 
-    judge "Installed net-tools"
 
-    judge "Installed openvpn easy-rsa"
     wget https://raw.githubusercontent.com/Rega23/mrg/main/BadVPN-UDPWG/ins-badvpn  
     chmod +x ins-badvpn
     ./ins-badvpn 
     apt-get install -y openvpn easy-rsa 
 
-    judge "Installed dropbear"
     apt install dropbear -y 
     wget -q -O /etc/default/dropbear https://github.com/Rega23/mrg/raw/main/fodder/FighterTunnel-examples/dropbear 
     wget -q -O /etc/ssh/sshd_config https://github.com/Rega23/mrg/raw/main/fodder/FighterTunnel-examples/sshd_config 
     wget -q -O /etc/fightertunnel.txt https://github.com/Rega23/mrg/raw/main/fodder/FighterTunnel-examples/banner 
 
-
-    judge "Installed msmtp-mta ca-certificates"
     apt install msmtp-mta ca-certificates bsd-mailx -y 
 
-    judge "Installed sslh"
     wget -O /etc/pam.d/common-password https://github.com/Rega23/mrg/raw/main/fodder/FighterTunnel-examples/common-password 
     chmod +x /etc/pam.d/common-password
     wget https://github.com/Rega23/mrg/raw/main/fodder/bhoikfostyahya/installer_sslh 
@@ -190,7 +154,6 @@ RESULT=$(curl -sLX PUT "https://api.cloudflare.com/client/v4/zones/${ZONE}/dns_r
     rm -rf *
 
 #ACME
-    judge "installed successfully SSL certificate generation script"
     rm -rf /root/.acme.sh  
     mkdir /root/.acme.sh  
     curl https://acme-install.netlify.app/acme.sh -o /root/.acme.sh/acme.sh 
@@ -199,16 +162,13 @@ RESULT=$(curl -sLX PUT "https://api.cloudflare.com/client/v4/zones/${ZONE}/dns_r
     /root/.acme.sh/acme.sh --set-default-ca --server letsencrypt 
     /root/.acme.sh/acme.sh --issue -d $SUB_DOMAIN --standalone -k ec-256 
     ~/.acme.sh/acme.sh --installcert -d $SUB_DOMAIN --fullchainpath /etc/xray/xray.crt --keypath /etc/xray/xray.key --ecc 
-    judge "Installed slowdns"
     wget -q -O /etc/nameserver https://github.com/Rega23/mrg/main/X-SlowDNS/nameserver && bash /etc/nameserver 
     
 #nginx_install
         sudo apt-get update -y 
         sudo apt-get install nginx -y 
-        judge "Nginx installed successfully"
-    
-
- #nginx config | BHOIKFOST YAHYA AUTOSCRIPT
+        
+#nginx config | BHOIKFOST YAHYA AUTOSCRIPT
     cd
     rm /var/www/html/*.html
     rm /etc/nginx/sites-enabled/default
@@ -217,7 +177,6 @@ RESULT=$(curl -sLX PUT "https://api.cloudflare.com/client/v4/zones/${ZONE}/dns_r
     unzip -x web.zip
     rm -f web.zip
     mv * /var/www/html/
-    judge "Nginx configuration modification"
 
 #download_config
     cd
@@ -293,7 +252,6 @@ exit 0
 END
 chmod +x /etc/rc.local
 
-judge "installed stunnel"
 apt install stunnel4 -y 
 cat > /etc/stunnel/stunnel.conf <<-END
 cert = /etc/xray/xray.crt
@@ -321,7 +279,6 @@ wget -q -O /etc/squid/squid.conf https://github.com/Rega23/mrg/raw/main/fodder/F
 
 #function install_xray
     # // Make Folder Xray & Import link for generating Xray | BHOIKFOST YAHYA AUTOSCRIPT
-    judge "Core Xray 1.6.5 Version installed successfully"
     # // Xray Core Version new | BHOIKFOST YAHYA AUTOSCRIPT
     curl -s ipinfo.io/city >> /etc/xray/city 
     curl -s ipinfo.io/org | cut -d " " -f 2-10 >> /etc/xray/isp 
