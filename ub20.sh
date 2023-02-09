@@ -340,10 +340,10 @@ wget -q -O /etc/squid/squid.conf https://github.com/Rega23/mrg/raw/main/fodder/F
     systemctl daemon-reload 
     systemctl enable ws.service 
     systemctl restart ws.service     
-    systemctl disable sslh 
-    systemctl stop sslh 
-    systemctl enable sslh 
-    systemctl start sslh 
+    #systemctl disable sslh 
+    #systemctl stop sslh 
+    #systemctl enable sslh 
+    #systemctl start sslh 
 
 cat > /etc/msmtprc <<EOF
 defaults
