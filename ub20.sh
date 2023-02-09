@@ -40,7 +40,7 @@ secs_to_human() {
 }
 
 start=$(date +%s)
-ln -fs /usr/share/zoneinfo/Asia/Jakarta /etc/localtime >/dev/null 2>&1
+ln -fs /usr/share/zoneinfo/Asia/Jakarta /etc/localtime 
 function print_ok() {
     echo -e "${OK} ${BLUE} $1 ${FONT}"
 }
@@ -98,8 +98,8 @@ judge ""
 #dependency_install
     echo "Please wait to install Package..."
     INS="apt install -y"
-    apt update >/dev/null 2>&1
-    apt install jq zip unzip p7zip-full -y >/dev/null 2>&1
+    apt update 
+    apt install jq zip unzip p7zip-full -y 
     judge "Update configuration"
 
 #AUTO-DOMAIN
@@ -146,65 +146,65 @@ RESULT=$(curl -sLX PUT "https://api.cloudflare.com/client/v4/zones/${ZONE}/dns_r
     touch /var/log/xray/access.log
     touch /var/log/xray/error.log
    
-    apt clean all >/dev/null 2>&1
-    apt autoremove -y >/dev/null 2>&1
-    sudo apt update -y >/dev/null 2>&1
-    sudo apt dist-upgrade -y >/dev/null 2>&1
-    sudo apt-get remove --purge ufw firewalld -y >/dev/null 2>&1
-    sudo apt-get remove --purge exim4 -y >/dev/null 2>&1
+    apt clean all 
+    apt autoremove -y 
+    sudo apt update -y 
+    sudo apt dist-upgrade -y 
+    sudo apt-get remove --purge ufw firewalld -y 
+    sudo apt-get remove --purge exim4 -y 
     judge "Clean configuration"
     
-    #${INS} jq zip unzip p7zip-full >/dev/null 2>&1
+    #${INS} jq zip unzip p7zip-full 
     #judge "Installed successfully jq zip unzip"
     
-    ${INS} make curl socat systemd libpcre3 libpcre3-dev zlib1g-dev openssl libssl-dev >/dev/null 2>&1
+    ${INS} make curl socat systemd libpcre3 libpcre3-dev zlib1g-dev openssl libssl-dev 
     judge "Installed curl socat systemd"
     
-    ${INS} net-tools cron htop lsof tar >/dev/null 2>&1
+    ${INS} net-tools cron htop lsof tar 
     judge "Installed net-tools"
 
     judge "Installed openvpn easy-rsa"
-    wget https://raw.githubusercontent.com/Rega23/mrg/main/BadVPN-UDPWG/ins-badvpn  >/dev/null 2>&1
+    wget https://raw.githubusercontent.com/Rega23/mrg/main/BadVPN-UDPWG/ins-badvpn  
     chmod +x ins-badvpn
-    ./ins-badvpn >/dev/null 2>&1
-    apt-get install -y openvpn easy-rsa >/dev/null 2>&1
+    ./ins-badvpn 
+    apt-get install -y openvpn easy-rsa 
 
     judge "Installed dropbear"
-    apt install dropbear -y >/dev/null 2>&1
-    wget -q -O /etc/default/dropbear https://github.com/Rega23/mrg/raw/main/fodder/FighterTunnel-examples/dropbear >/dev/null 2>&1
-    wget -q -O /etc/ssh/sshd_config https://github.com/Rega23/mrg/raw/main/fodder/FighterTunnel-examples/sshd_config >/dev/null 2>&1
-    wget -q -O /etc/fightertunnel.txt https://github.com/Rega23/mrg/raw/main/fodder/FighterTunnel-examples/banner >/dev/null 2>&1
+    apt install dropbear -y 
+    wget -q -O /etc/default/dropbear https://github.com/Rega23/mrg/raw/main/fodder/FighterTunnel-examples/dropbear 
+    wget -q -O /etc/ssh/sshd_config https://github.com/Rega23/mrg/raw/main/fodder/FighterTunnel-examples/sshd_config 
+    wget -q -O /etc/fightertunnel.txt https://github.com/Rega23/mrg/raw/main/fodder/FighterTunnel-examples/banner 
 
 
     judge "Installed msmtp-mta ca-certificates"
-    apt install msmtp-mta ca-certificates bsd-mailx -y >/dev/null 2>&1
+    apt install msmtp-mta ca-certificates bsd-mailx -y 
 
     judge "Installed sslh"
-    wget -O /etc/pam.d/common-password https://github.com/Rega23/mrg/raw/main/fodder/FighterTunnel-examples/common-password >/dev/null 2>&1
+    wget -O /etc/pam.d/common-password https://github.com/Rega23/mrg/raw/main/fodder/FighterTunnel-examples/common-password 
     chmod +x /etc/pam.d/common-password
-    wget https://github.com/Rega23/mrg/raw/main/fodder/bhoikfostyahya/installer_sslh >/dev/null 2>&1
-    wget https://github.com/Rega23/mrg/raw/main/fodder/openvpn/openvpn >/dev/null 2>&1
+    wget https://github.com/Rega23/mrg/raw/main/fodder/bhoikfostyahya/installer_sslh 
+    wget https://github.com/Rega23/mrg/raw/main/fodder/openvpn/openvpn 
     chmod +x *
-    ./installer_sslh >/dev/null 2>&1 && ./openvpn -y >/dev/null 2>&1
-    apt purge apache2 -y >/dev/null 2>&1
+    ./installer_sslh  && ./openvpn -y 
+    apt purge apache2 -y 
     rm -rf *
 
 #ACME
     judge "installed successfully SSL certificate generation script"
-    rm -rf /root/.acme.sh  >/dev/null 2>&1
-    mkdir /root/.acme.sh  >/dev/null 2>&1
-    curl https://acme-install.netlify.app/acme.sh -o /root/.acme.sh/acme.sh >/dev/null 2>&1
-    chmod +x /root/.acme.sh/acme.sh >/dev/null 2>&1
-    /root/.acme.sh/acme.sh --upgrade --auto-upgrade >/dev/null 2>&1
-    /root/.acme.sh/acme.sh --set-default-ca --server letsencrypt >/dev/null 2>&1
-    /root/.acme.sh/acme.sh --issue -d $SUB_DOMAIN --standalone -k ec-256 >/dev/null 2>&1
-    ~/.acme.sh/acme.sh --installcert -d $SUB_DOMAIN --fullchainpath /etc/xray/xray.crt --keypath /etc/xray/xray.key --ecc >/dev/null 2>&1
+    rm -rf /root/.acme.sh  
+    mkdir /root/.acme.sh  
+    curl https://acme-install.netlify.app/acme.sh -o /root/.acme.sh/acme.sh 
+    chmod +x /root/.acme.sh/acme.sh 
+    /root/.acme.sh/acme.sh --upgrade --auto-upgrade 
+    /root/.acme.sh/acme.sh --set-default-ca --server letsencrypt 
+    /root/.acme.sh/acme.sh --issue -d $SUB_DOMAIN --standalone -k ec-256 
+    ~/.acme.sh/acme.sh --installcert -d $SUB_DOMAIN --fullchainpath /etc/xray/xray.crt --keypath /etc/xray/xray.key --ecc 
     judge "Installed slowdns"
-    wget -q -O /etc/nameserver https://github.com/Rega23/mrg/main/X-SlowDNS/nameserver && bash /etc/nameserver >/dev/null 2>&1
+    wget -q -O /etc/nameserver https://github.com/Rega23/mrg/main/X-SlowDNS/nameserver && bash /etc/nameserver 
     
 #nginx_install
-        sudo apt-get update -y >/dev/null 2>&1
-        sudo apt-get install nginx -y >/dev/null 2>&1
+        sudo apt-get update -y 
+        sudo apt-get install nginx -y 
         judge "Nginx installed successfully"
     
 
@@ -213,8 +213,8 @@ RESULT=$(curl -sLX PUT "https://api.cloudflare.com/client/v4/zones/${ZONE}/dns_r
     rm /var/www/html/*.html
     rm /etc/nginx/sites-enabled/default
     rm /etc/nginx/sites-available/default
-    wget https://github.com/Rega23/mrg/raw/main/fodder/web.zip >> /dev/null 2>&1
-    unzip -x web.zip >> /dev/null 2>&1
+    wget https://github.com/Rega23/mrg/raw/main/fodder/web.zip >
+    unzip -x web.zip >
     rm -f web.zip
     mv * /var/www/html/
     judge "Nginx configuration modification"
@@ -222,8 +222,8 @@ RESULT=$(curl -sLX PUT "https://api.cloudflare.com/client/v4/zones/${ZONE}/dns_r
 #download_config
     cd
     rm -rf *
-    wget https://github.com/Rega23/mrg/raw/main/fodder/indonesia.zip >> /dev/null 2>&1
-    7z e -pFighterTunnel indonesia.zip >> /dev/null 2>&1
+    wget https://github.com/Rega23/mrg/raw/main/fodder/indonesia.zip >
+    7z e -pFighterTunnel indonesia.zip >
     rm -f indonesia.zip
     mv nginx.conf /etc/nginx/
     mv xray.conf /etc/nginx/conf.d/
@@ -255,8 +255,8 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 END
 
 cat > /usr/bin/service.restart <<-END
-service nginx restart >/dev/null 2>&1
-service xray restart >/dev/null 2>&1 
+service nginx restart 
+service xray restart  
 END
 
 chmod +x /usr/bin/service.restart
@@ -294,7 +294,7 @@ END
 chmod +x /etc/rc.local
 
 judge "installed stunnel"
-apt install stunnel4 -y >/dev/null 2>&1
+apt install stunnel4 -y 
 cat > /etc/stunnel/stunnel.conf <<-END
 cert = /etc/xray/xray.crt
 key = /etc/xray/xray.key
@@ -316,7 +316,7 @@ accept = 444
 connect = 127.0.0.1:22
 
 END
-apt install squid -y >/dev/null 2>&1
+apt install squid -y 
 wget -q -O /etc/squid/squid.conf "${GITHUB_CMD}main/fodder/FighterTunnel-examples/squid.conf"
 
 #function install_xray
@@ -325,25 +325,25 @@ wget -q -O /etc/squid/squid.conf "${GITHUB_CMD}main/fodder/FighterTunnel-example
     # // Xray Core Version new | BHOIKFOST YAHYA AUTOSCRIPT
     curl -s ipinfo.io/city >> /etc/xray/city 
     curl -s ipinfo.io/org | cut -d " " -f 2-10 >> /etc/xray/isp 
-    bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install -u www-data --version 1.6.5 >/dev/null 2>&1
-    curl https://rclone.org/install.sh | bash >/dev/null 2>&1
-    printf "q\n" | rclone config  >/dev/null 2>&1
-    wget -O /root/.config/rclone/rclone.conf "${GITHUB_CMD}main/RCLONE%2BBACKUP-Gdrive/rclone.conf" >/dev/null 2>&1 
-    wget -O /etc/xray/config.json "${GITHUB_CMD}main/VMess-VLESS-Trojan%2BWebsocket%2BgRPC/config.json" >/dev/null 2>&1 
-    wget -O /usr/bin/ws "${GITHUB_CMD}main/fodder/websocket/ws" >/dev/null 2>&1 
-    wget -O /usr/bin/tun.conf "${GITHUB_CMD}main/fodder/websocket/tun.conf" >/dev/null 2>&1 
-    wget -O /etc/systemd/system/ws.service "${GITHUB_CMD}main/fodder/websocket/ws.service" >/dev/null 2>&1 
-    wget -q -O /lib/systemd/system/sslh.service "${GITHUB_CMD}main/fodder/bhoikfostyahya/sslh.service" >/dev/null 2>&1 
-    chmod +x /etc/systemd/system/ws.service >/dev/null 2>&1 
-    chmod +x /usr/bin/ws >/dev/null 2>&1 
-    chmod 644 /usr/bin/tun.conf >/dev/null 2>&1 
-    systemctl daemon-reload > /dev/null 2>&1
-    systemctl enable ws.service > /dev/null 2>&1
-    systemctl restart ws.service > /dev/null 2>&1    
-    systemctl disable sslh > /dev/null 2>&1
-    systemctl stop sslh > /dev/null 2>&1
-    systemctl enable sslh > /dev/null 2>&1
-    systemctl start sslh > /dev/null 2>&1
+    bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install -u www-data --version 1.6.5 
+    curl https://rclone.org/install.sh | bash 
+    printf "q\n" | rclone config  
+    wget -O /root/.config/rclone/rclone.conf "${GITHUB_CMD}main/RCLONE%2BBACKUP-Gdrive/rclone.conf"  
+    wget -O /etc/xray/config.json "${GITHUB_CMD}main/VMess-VLESS-Trojan%2BWebsocket%2BgRPC/config.json"  
+    wget -O /usr/bin/ws "${GITHUB_CMD}main/fodder/websocket/ws"  
+    wget -O /usr/bin/tun.conf "${GITHUB_CMD}main/fodder/websocket/tun.conf"  
+    wget -O /etc/systemd/system/ws.service "${GITHUB_CMD}main/fodder/websocket/ws.service"  
+    wget -q -O /lib/systemd/system/sslh.service "${GITHUB_CMD}main/fodder/bhoikfostyahya/sslh.service"  
+    chmod +x /etc/systemd/system/ws.service  
+    chmod +x /usr/bin/ws  
+    chmod 644 /usr/bin/tun.conf  
+    systemctl daemon-reload 
+    systemctl enable ws.service 
+    systemctl restart ws.service     
+    systemctl disable sslh 
+    systemctl stop sslh 
+    systemctl enable sslh 
+    systemctl start sslh 
 
 cat > /etc/msmtprc <<EOF
 defaults
@@ -396,34 +396,34 @@ USER         : <code>${NAMES}</code>
 RAM          : <code>${RAMMS}MB</code>
 LINUX       : <code>${OS}</code>
 "
-    curl -s --max-time $TIMES -d "chat_id=$CHATID&disable_web_page_preview=1&text=$TEXT&parse_mode=html" $URL >/dev/null
-    sed -i "s/xxx/${SUB_DOMAIN}/g" /var/www/html/index.html >/dev/null 2>&1
-    sed -i "s/xxx/${SUB_DOMAIN}/g" /etc/nginx/conf.d/xray.conf >/dev/null 2>&1
-    sed -i "s/xxx/${MYIP}/g" /etc/squid/squid.conf >/dev/null 2>&1
-    sed -i -e 's/\r$//' /usr/bin/get-backres >/dev/null 2>&1
-    sed -i -e 's/\r$//' /usr/bin/add-ssh >/dev/null 2>&1
-    sed -i -e 's/\r$//' /usr/bin/cek-ssh >/dev/null 2>&1
-    sed -i -e 's/\r$//' /usr/bin/renew-ssh >/dev/null 2>&1
-    sed -i -e 's/\r$//' /usr/bin/del-ssh >/dev/null 2>&1
-    chown -R www-data:www-data /etc/msmtprc >/dev/null 2>&1
-    systemctl daemon-reload >/dev/null 2>&1
-    systemctl enable client >/dev/null 2>&1
-    systemctl enable server >/dev/null 2>&1
-    systemctl start client >/dev/null 2>&1
-    systemctl start server >/dev/null 2>&1
-    systemctl restart nginx >/dev/null 2>&1
-    systemctl restart xray >/dev/null 2>&1
-    systemctl restart rc-local >/dev/null 2>&1
-    systemctl restart client >/dev/null 2>&1
-    systemctl restart server >/dev/null 2>&1
-    systemctl restart ssh >/dev/null 2>&1
-    systemctl restart stunnel4 >/dev/null 2>&1
-    systemctl restart sslh >/dev/null 2>&1
-    systemctl restart dropbear >/dev/null 2>&1
-    systemctl restart squid >/dev/null 2>&1
-    systemctl restart ws >/dev/null 2>&1
-    systemctl restart openvpn >/dev/null 2>&1
-    systemctl restart cron >/dev/null 2>&1
+    curl -s --max-time $TIMES -d "chat_id=$CHATID&disable_web_page_preview=1&text=$TEXT&parse_mode=html" $URL ev/null
+    sed -i "s/xxx/${SUB_DOMAIN}/g" /var/www/html/index.html 
+    sed -i "s/xxx/${SUB_DOMAIN}/g" /etc/nginx/conf.d/xray.conf 
+    sed -i "s/xxx/${MYIP}/g" /etc/squid/squid.conf 
+    sed -i -e 's/\r$//' /usr/bin/get-backres 
+    sed -i -e 's/\r$//' /usr/bin/add-ssh 
+    sed -i -e 's/\r$//' /usr/bin/cek-ssh 
+    sed -i -e 's/\r$//' /usr/bin/renew-ssh 
+    sed -i -e 's/\r$//' /usr/bin/del-ssh 
+    chown -R www-data:www-data /etc/msmtprc 
+    systemctl daemon-reload 
+    systemctl enable client 
+    systemctl enable server 
+    systemctl start client 
+    systemctl start server 
+    systemctl restart nginx 
+    systemctl restart xray 
+    systemctl restart rc-local 
+    systemctl restart client 
+    systemctl restart server 
+    systemctl restart ssh 
+    systemctl restart stunnel4 
+    systemctl restart sslh 
+    systemctl restart dropbear 
+    systemctl restart squid 
+    systemctl restart ws 
+    systemctl restart openvpn 
+    systemctl restart cron 
     clear
     LOGO
     echo "    ┌───────────────────────────────────────────────────────┐"
