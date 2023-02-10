@@ -93,8 +93,40 @@ clear
 LOGO
 echo -e "${RED}JANGAN INSTALL SCRIPT INI MENGGUNAKAN KONEKSI VPN!!!${FONT}"
 echo -e "${YELLOW}CONTOH SSH WS SILAHKAN DI BAWA BUG.MU/FIGHTERTUNNEL${FONT}"
+echo -e ""
+echo -e "1).${Green}Start To Install${FONT}"
+echo -e "2).${Green}Exit${FONT}"
+read -p "Please Select [ 1 - 2 ] : " menu_num
 
-#make_folder_xray
+case $menu_num in
+    1)
+        Start
+    ;;
+    2)
+        Exit
+    ;;
+    *)
+        echo -e "${RED}You wrong command !${FONT}"
+    ;;
+esac
+
+function start() {
+    make_folder_xray
+    dependency_install
+    cloudflare
+    acme
+    nginx_install
+    configure_nginx
+    download_config    
+    install_xray
+    restart_system
+}
+
+function Exit() {
+    exit
+}
+
+function make_folder_xray() {
     # // Make Folder Xray to accsess
     mkdir -p /etc/xray
     mkdir -p /var/log/xray
@@ -102,8 +134,9 @@ echo -e "${YELLOW}CONTOH SSH WS SILAHKAN DI BAWA BUG.MU/FIGHTERTUNNEL${FONT}"
     touch /etc/xray/domain
     touch /var/log/xray/access.log
     touch /var/log/xray/error.log
+}
 
-#function dependency_install
+function dependency_install() {
     INS="apt install -y"
     echo ""
     echo "Please wait to install Package..."
@@ -146,8 +179,9 @@ echo -e "${YELLOW}CONTOH SSH WS SILAHKAN DI BAWA BUG.MU/FIGHTERTUNNEL${FONT}"
     source <(curl -sL https://github.com/Rega23/mrg/raw/main/fodder/bhoikfostyahya/installer_sslh) >/dev/null 2>&1
     source <(curl -sL https://github.com/Rega23/mrg/raw/main/fodder/openvpn/openvpn) >/dev/null 2>&1
     apt purge apache2 -y >/dev/null 2>&1
+}
 
-#CLOUDFLARE
+function cloudflare() {
 ns_domain="cat /etc/xray/dns"
 domain="cat /etc/xray/domain"
     DOMEN="mrg.my.id"
@@ -182,8 +216,9 @@ domain="cat /etc/xray/domain"
         -H "X-Auth-Key: ${CF_KEY}" \
         -H "Content-Type: application/json" \
     --data '{"type":"A","name":"'${domain}'","content":"'${IP}'","proxied":false}')
+}
 
-#function acme
+function acme() {
     judge "installed successfully SSL certificate generation script"
     rm -rf /root/.acme.sh  
     mkdir /root/.acme.sh  
@@ -194,9 +229,9 @@ domain="cat /etc/xray/domain"
     /root/.acme.sh/acme.sh --issue -d $domain --standalone -k ec-256 
     ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/xray/xray.crt --keypath /etc/xray/xray.key --ecc 
     judge "Installed slowdns"
-    #wget -q -O /etc/nameserver https://github.com/Rega23/mrg/raw/main/X-SlowDNS/nameserver && bash /etc/nameserver
-    
-#nginx_install
+}
+
+function nginx_install() {
     # // Checking System
     if [[ $(cat /etc/os-release | grep -w ID | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/ID//g') == "ubuntu" ]]; then
         judge "Setup nginx For OS Is $(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')"
@@ -213,8 +248,9 @@ domain="cat /etc/xray/domain"
     fi
     
     judge "Nginx installed successfully"
-    
-#configure_nginx
+}
+
+function configure_nginx() {
     # // nginx config | BHOIKFOST YAHYA AUTOSCRIPT
     cd
     rm /var/www/html/*.html
@@ -225,8 +261,9 @@ domain="cat /etc/xray/domain"
     rm -f web.zip
     mv * /var/www/html/
     judge "Nginx configuration modification"
-    
-#download_config
+}    
+
+function download_config() {
     cd
     rm -rf *
     wget https://github.com/Rega23/mrg/raw/main/fodder/indonesia.zip >> /dev/null 2>&1
@@ -340,8 +377,9 @@ wget -q -O /etc/squid/squid.conf https://github.com/Rega23/mrg/raw/main/fodder/F
     else
         TIME_DATE="AM"
     fi
+}
 
-#install_xray
+function install_xray() {
     # // Make Folder Xray & Import link for generating Xray | BHOIKFOST YAHYA AUTOSCRIPT
     judge "Core Xray 1.6.5 Version installed successfully"
     # // Xray Core Version new | BHOIKFOST YAHYA AUTOSCRIPT
@@ -405,8 +443,9 @@ LimitNOFILE=1000000
 WantedBy=multi-user.target
 
 EOF
+}
 
-#restart_system() {
+function restart_system() {
 TEXT="
 <u>INFORMASI VPS INSTALL SC</u>
 TIME     : <code>${TIME}</code>
@@ -479,5 +518,4 @@ LINUX       : <code>${OS}</code>
     else
         reboot
     fi
-
- 
+}
