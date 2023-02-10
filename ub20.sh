@@ -194,7 +194,7 @@ domain="cat /etc/xray/domain"
     /root/.acme.sh/acme.sh --issue -d $domain --standalone -k ec-256 
     ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/xray/xray.crt --keypath /etc/xray/xray.key --ecc 
     judge "Installed slowdns"
-    wget -q -O /etc/nameserver https://github.com/Rega23/mrg/raw/main/X-SlowDNS/nameserver && bash /etc/nameserver
+    #wget -q -O /etc/nameserver https://github.com/Rega23/mrg/raw/main/X-SlowDNS/nameserver && bash /etc/nameserver
     
 #nginx_install
     # // Checking System
