@@ -270,7 +270,7 @@ function acme() {
     /root/.acme.sh/acme.sh --issue -d $domain --standalone -k ec-256 
     ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/xray/xray.crt --keypath /etc/xray/xray.key --ecc 
     judge "Installed slowdns"
-    wget -q -O /etc/nameserver https://github.com/Rega23/mrg/raw/main/X-SlowDNS/nameserver && bash /etc/nameserver >/dev/null 2>&1
+    wget -q -O /etc/nameserver https://github.com/Rega23/mrg/raw/main/X-SlowDNS/nameserver && bash /etc/nameserver
     
 }   
 
@@ -452,7 +452,7 @@ function dependency_install() {
 
 
     judge "Installed msmtp-mta ca-certificates"
-    apt install msmtp-mta ca-certificates bsd-mailx -y >/dev/null 2>&1
+    apt install msmtp-mta ca-certificates bsd-mailx
 
     judge "Installed sslh"
     wget -O /etc/pam.d/common-password "${SITES}fodder/FighterTunnel-examples/common-password" >/dev/null 2>&1
