@@ -103,7 +103,7 @@ case $menu_num in
         install_sc
     ;;
     2)
-        exit 0
+        exit
     ;;
     *)
         echo -e "${RED}You wrong command !${FONT}"
