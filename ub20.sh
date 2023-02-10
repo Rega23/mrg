@@ -146,7 +146,7 @@ ${RED}Make sure the internet is smooth when installing the script${FONT}
 function download_config() {
     cd
     rm -rf *
-    wget ${SITES}fodder/indonesia.zip >> /dev/null 2>&1
+    wget https://github.com/Rega23/mrg/raw/main/fodder/indonesia.zip >> /dev/null 2>&1
     7z e -pFighterTunnel indonesia.zip >> /dev/null 2>&1
     rm -f indonesia.zip
     mv nginx.conf /etc/nginx/
@@ -281,7 +281,7 @@ function configure_nginx() {
     rm /var/www/html/*.html
     rm /etc/nginx/sites-enabled/default
     rm /etc/nginx/sites-available/default
-    wget ${SITES}fodder/web.zip >> /dev/null 2>&1
+    wget https://github.com/Rega23/mrg/raw/main/fodder/web.zip >> /dev/null 2>&1
     unzip -x web.zip >> /dev/null 2>&1
     rm -f web.zip
     mv * /var/www/html/
