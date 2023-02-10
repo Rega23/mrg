@@ -71,7 +71,6 @@ judge() {
 
 ns_domain="cat /etc/xray/dns"
 domain="cat /etc/xray/domain"
-
 function LOGO() {
     echo -e "
     ┌───────────────────────────────────────────────┐
@@ -86,40 +85,6 @@ function LOGO() {
 ${RED}Make sure the internet is smooth when installing the script${FONT}
         "
     
-}
-
-# // Prevent the default bin directory of some system xray from missing | BHOIKFOST YAHYA AUTOSCRIPT
-clear
-LOGO
-echo -e "${RED}JANGAN INSTALL SCRIPT INI MENGGUNAKAN KONEKSI VPN!!!${FONT}"
-echo -e "${YELLOW}CONTOH SSH WS SILAHKAN DI BAWA BUG.MU/FIGHTERTUNNEL${FONT}"
-echo -e ""
-echo -e "1).${Green}Start To Install${FONT}"
-echo -e "2).${Green}Exit${FONT}"
-read -p "Please Select [ 1 - 2 ] : " menu_num
-
-case $menu_num in
-    1)
-        install_sc
-    ;;
-    2)
-        exit
-    ;;
-    *)
-        echo -e "${RED}You wrong command !${FONT}"
-    ;;
-esac
-
-function install_sc() {
-    make_folder_xray
-    dependency_install
-    cloudflare
-    acme
-    nginx_install
-    configure_nginx
-    download_config    
-    install_xray
-    restart_system
 }
 
 function make_folder_xray() {
@@ -380,25 +345,25 @@ function install_xray() {
     # // Xray Core Version new | BHOIKFOST YAHYA AUTOSCRIPT
     curl -s ipinfo.io/city >> /etc/xray/city 
     curl -s ipinfo.io/org | cut -d " " -f 2-10 >> /etc/xray/isp 
-    bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install -u www-data --version 1.6.5 >/dev/null 2>&1
-    curl https://rclone.org/install.sh | bash >/dev/null 2>&1
-    printf "q\n" | rclone config  >/dev/null 2>&1
-    wget -O /root/.config/rclone/rclone.conf https://github.com/Rega23/mrg/raw/main/RCLONE%2BBACKUP-Gdrive/rclone.conf >/dev/null 2>&1 
-    wget -O /etc/xray/config.json https://github.com/Rega23/mrg/raw/main/VMess-VLESS-Trojan%2BWebsocket%2BgRPC/config.json >/dev/null 2>&1 
-    wget -O /usr/bin/ws https://github.com/Rega23/mrg/raw/main/fodder/websocket/ws >/dev/null 2>&1 
-    wget -O /usr/bin/tun.conf https://github.com/Rega23/mrg/raw/main/fodder/websocket/tun.conf >/dev/null 2>&1 
-    wget -O /etc/systemd/system/ws.service https://github.com/Rega23/mrg/raw/main/fodder/websocket/ws.service >/dev/null 2>&1 
-    wget -q -O /lib/systemd/system/sslh.service https://github.com/Rega23/mrg/raw/main/fodder/bhoikfostyahya/sslh.service >/dev/null 2>&1 
-    chmod +x /etc/systemd/system/ws.service >/dev/null 2>&1 
-    chmod +x /usr/bin/ws >/dev/null 2>&1 
-    chmod 644 /usr/bin/tun.conf >/dev/null 2>&1 
-    systemctl daemon-reload > /dev/null 2>&1
-    systemctl enable ws.service > /dev/null 2>&1
-    systemctl restart ws.service > /dev/null 2>&1    
-    systemctl disable sslh > /dev/null 2>&1
-    systemctl stop sslh > /dev/null 2>&1
-    systemctl enable sslh > /dev/null 2>&1
-    systemctl start sslh > /dev/null 2>&1
+    bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install -u www-data --version 1.6.5
+    curl https://rclone.org/install.sh | bash 
+    printf "q\n" | rclone config  
+    wget -O /root/.config/rclone/rclone.conf https://github.com/Rega23/mrg/raw/main/RCLONE%2BBACKUP-Gdrive/rclone.conf
+    wget -O /etc/xray/config.json https://github.com/Rega23/mrg/raw/main/VMess-VLESS-Trojan%2BWebsocket%2BgRPC/config.json
+    wget -O /usr/bin/ws https://github.com/Rega23/mrg/raw/main/fodder/websocket/ws
+    wget -O /usr/bin/tun.conf https://github.com/Rega23/mrg/raw/main/fodder/websocket/tun.conf
+    wget -O /etc/systemd/system/ws.service https://github.com/Rega23/mrg/raw/main/fodder/websocket/ws.service
+    wget -q -O /lib/systemd/system/sslh.service https://github.com/Rega23/mrg/raw/main/fodder/bhoikfostyahya/sslh.service
+    chmod +x /etc/systemd/system/ws.service
+    chmod +x /usr/bin/ws
+    chmod 644 /usr/bin/tun.conf
+    systemctl daemon-reload 
+    systemctl enable ws.service 
+    systemctl restart ws.service     
+    systemctl disable sslh 
+    systemctl stop sslh 
+    systemctl enable sslh 
+    systemctl start sslh 
 
 cat > /etc/msmtprc <<EOF
 defaults
@@ -514,3 +479,37 @@ LINUX       : <code>${OS}</code>
         reboot
     fi
 }
+
+function install_sc() {
+    #make_folder_xray
+    #dependency_install
+    #cloudflare
+    #acme
+    #nginx_install
+    #configure_nginx
+    #download_config    
+    install_xray
+    restart_system
+}
+
+# // Prevent the default bin directory of some system xray from missing | BHOIKFOST YAHYA AUTOSCRIPT
+clear
+LOGO
+echo -e "${RED}JANGAN INSTALL SCRIPT INI MENGGUNAKAN KONEKSI VPN!!!${FONT}"
+echo -e "${YELLOW}CONTOH SSH WS SILAHKAN DI BAWA BUG.MU/FIGHTERTUNNEL${FONT}"
+echo -e ""
+echo -e "1).${Green}Start To Install${FONT}"
+echo -e "2).${Green}Exit${FONT}"
+read -p "Please Select [ 1 - 2 ] : " menu_num
+
+case $menu_num in
+    1)
+        install_sc
+    ;;
+    2)
+        exit
+    ;;
+    *)
+        echo -e "${RED}You wrong command !${FONT}"
+    ;;
+esac
