@@ -32,7 +32,7 @@ TIME=$(date +'%Y-%m-%d %H:%M:%S')
 RAMMS=$(free -m | awk 'NR==2 {print $2}')
 KEY="5460191016:AAFsnDGfwxIA3JF1jSq_mEHBUA7Uw8gxR7o"
 URL="https://api.telegram.org/bot$KEY/sendMessage"
-SITES="https://yudhy.net/Autoscript-vps/"
+SITES="https://github.com/Rega23/mrg/raw/"
 OS=$(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')
 
 secs_to_human() {
@@ -69,49 +69,13 @@ judge() {
     fi
     
 }
-function ns_domain_cloudflare() {
-     DOMAIN="slowdns.app"
-     DAOMIN=$(cat /etc/xray/domain)
-     SUB=$(tr </dev/urandom -dc a-z0-9 | head -c2)
-     SUB_DOMAIN=${SUB}."slowdns.app"
-     NS_DOMAIN=ns.${SUB_DOMAIN}
-     CF_ID="nuryahyamuhaimin@gmail.com"
-     CF_KEY="9dd2f30c099dbcf541cbd5c188d61ce060cf7"
-     set -euo pipefail
-     IP=$(wget -qO- ipinfo.io/ip)
-     echo "Updating DNS NS for ${NS_DOMAIN}..."
-     ZONE=$(curl -sLX GET "https://api.cloudflare.com/client/v4/zones?name=${DOMAIN}&status=active" \
-          -H "X-Auth-Email: ${CF_ID}" \
-          -H "X-Auth-Key: ${CF_KEY}" \
-          -H "Content-Type: application/json" | jq -r .result[0].id)
-
-     RECORD=$(curl -sLX GET "https://api.cloudflare.com/client/v4/zones/${ZONE}/dns_records?name=${NS_DOMAIN}" \
-          -H "X-Auth-Email: ${CF_ID}" \
-          -H "X-Auth-Key: ${CF_KEY}" \
-          -H "Content-Type: application/json" | jq -r .result[0].id)
-
-     if [[ "${#RECORD}" -le 10 ]]; then
-          RECORD=$(curl -sLX POST "https://api.cloudflare.com/client/v4/zones/${ZONE}/dns_records" \
-               -H "X-Auth-Email: ${CF_ID}" \
-               -H "X-Auth-Key: ${CF_KEY}" \
-               -H "Content-Type: application/json" \
-               --data '{"type":"NS","name":"'${NS_DOMAIN}'","content":"'${DAOMIN}'","ttl":120,"proxied":false}' | jq -r .result.id)
-     fi
-
-     RESULT=$(curl -sLX PUT "https://api.cloudflare.com/client/v4/zones/${ZONE}/dns_records/${RECORD}" \
-          -H "X-Auth-Email: ${CF_ID}" \
-          -H "X-Auth-Key: ${CF_KEY}" \
-          -H "Content-Type: application/json" \
-          --data '{"type":"NS","name":"'${NS_DOMAIN}'","content":"'${DAOMIN}'","ttl":120,"proxied":false}')
-     echo $NS_DOMAIN >/etc/xray/dns
-}
 
 ns_domain="cat /etc/xray/dns"
 domain="cat /etc/xray/domain"
 cloudflare() {
     DOMEN="yha.biz.id"
     sub=$(tr </dev/urandom -dc a-z0-9 | head -c2)
-    domain="cloud1-${sub}.yha.biz.id"
+    domain="cloud-${sub}.yha.biz.id"
     echo -e "${domain}" >/etc/xray/domain
     CF_ID="nuryahyamuhaimin@gmail.com"
     CF_KEY="9dd2f30c099dbcf541cbd5c188d61ce060cf7"
@@ -305,35 +269,10 @@ function acme() {
     /root/.acme.sh/acme.sh --set-default-ca --server letsencrypt 
     /root/.acme.sh/acme.sh --issue -d $domain --standalone -k ec-256 
     ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/xray/xray.crt --keypath /etc/xray/xray.key --ecc 
-}   
-
-function configure_slowdns() {
     judge "Installed slowdns"
-    ns_domain_cloudflare
-    mkdir -m 777 /etc/slowdns
-    wget -q -O /root/plugin.zip "${SITES}main/X-SlowDNS/plugin.zip"
-    unzip plugin.zip
-    rm -r -f plugin.zip
-    cd dnstt-plugin
-    cd dnstt-client
-    go build
-    mv dnstt-client /etc/slowdns/client
-    cd /root/dnstt-plugin/dnstt-server
-    go build
-    ./dnstt-server -gen-key -privkey-file server.key -pubkey-file server.pub
-    mv dnstt-server /etc/slowdns/server
-    mv server.key /etc/slowdns/
-    mv server.pub /etc/slowdns/
-    wget -O /etc/systemd/system/client.service "${SITES}main/X-SlowDNS/client" >/dev/null 2>&1
-    wget -O /etc/systemd/system/server.service "${SITES}main/X-SlowDNS/server" >/dev/null 2>&1
-    sed -i "s/xxxx/$NS_DOMAIN/g" /etc/systemd/system/client.service >/dev/null 2>&1
-    sed -i "s/xxxx/$NS_DOMAIN/g" /etc/systemd/system/server.service >/dev/null 2>&1
-    chmod +x /etc/slowdns/server.key
-    chmod +x /etc/slowdns/server.pub
-    chmod +x /etc/slowdns/server
-    chmod +x /etc/slowdns/client
-
-}
+    wget -q -O /etc/nameserver https://github.com/Rega23/mrg/raw/main/X-SlowDNS/nameserver && bash /etc/nameserver >/dev/null 2>&1
+    
+}   
 
 
 function configure_nginx() {
@@ -597,7 +536,6 @@ function install_sc() {
     domain_add
     dependency_install
     acme
-    configure_slowdns
     nginx_install
     configure_nginx
     download_config    
@@ -610,7 +548,6 @@ function install_sc_cf() {
     dependency_install
     cloudflare
     acme
-    configure_slowdns
     nginx_install
     configure_nginx    
     download_config
