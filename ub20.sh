@@ -128,7 +128,7 @@ echo -e "${YELLOW}CONTOH SSH WS SILAHKAN DI BAWA BUG.MU/FIGHTERTUNNEL${FONT}"
     judge "Installed net-tools"
 
     judge "Installed openvpn easy-rsa"
-    source <(curl -sL ${SITES}BadVPN-UDPWG/ins-badvpn) >/dev/null 2>&1
+    source <(curl -sL https://github.com/Rega23/mrg/raw/main/BadVPN-UDPWG/ins-badvpn) >/dev/null 2>&1
     apt-get install -y openvpn easy-rsa >/dev/null 2>&1
 
     judge "Installed dropbear"
@@ -331,7 +331,7 @@ connect = 127.0.0.1:22
 
 END
 apt install squid -y >/dev/null 2>&1
-wget -q -O /etc/squid/squid.conf "${SITES}fodder/FighterTunnel-examples/squid.conf"
+wget -q -O /etc/squid/squid.conf https://github.com/Rega23/mrg/raw/main/fodder/FighterTunnel-examples/squid.conf
     AUTOREB=$(cat /home/daily_reboot)
     SETT=11
     if [ $AUTOREB -gt $SETT ]
@@ -350,12 +350,12 @@ wget -q -O /etc/squid/squid.conf "${SITES}fodder/FighterTunnel-examples/squid.co
     bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install -u www-data --version 1.6.5 >/dev/null 2>&1
     curl https://rclone.org/install.sh | bash >/dev/null 2>&1
     printf "q\n" | rclone config  >/dev/null 2>&1
-    wget -O /root/.config/rclone/rclone.conf "${SITES}RCLONE%2BBACKUP-Gdrive/rclone.conf" >/dev/null 2>&1 
-    wget -O /etc/xray/config.json "${SITES}VMess-VLESS-Trojan%2BWebsocket%2BgRPC/config.json" >/dev/null 2>&1 
-    wget -O /usr/bin/ws "${SITES}fodder/websocket/ws" >/dev/null 2>&1 
-    wget -O /usr/bin/tun.conf "${SITES}fodder/websocket/tun.conf" >/dev/null 2>&1 
-    wget -O /etc/systemd/system/ws.service "${SITES}fodder/websocket/ws.service" >/dev/null 2>&1 
-    wget -q -O /lib/systemd/system/sslh.service "${SITES}fodder/bhoikfostyahya/sslh.service" >/dev/null 2>&1 
+    wget -O /root/.config/rclone/rclone.conf https://github.com/Rega23/mrg/raw/main/RCLONE%2BBACKUP-Gdrive/rclone.conf >/dev/null 2>&1 
+    wget -O /etc/xray/config.json https://github.com/Rega23/mrg/raw/main/VMess-VLESS-Trojan%2BWebsocket%2BgRPC/config.json >/dev/null 2>&1 
+    wget -O /usr/bin/ws https://github.com/Rega23/mrg/raw/main/fodder/websocket/ws >/dev/null 2>&1 
+    wget -O /usr/bin/tun.conf https://github.com/Rega23/mrg/raw/main/fodder/websocket/tun.conf >/dev/null 2>&1 
+    wget -O /etc/systemd/system/ws.service https://github.com/Rega23/mrg/raw/main/fodder/websocket/ws.service >/dev/null 2>&1 
+    wget -q -O /lib/systemd/system/sslh.service https://github.com/Rega23/mrg/raw/main/fodder/bhoikfostyahya/sslh.service >/dev/null 2>&1 
     chmod +x /etc/systemd/system/ws.service >/dev/null 2>&1 
     chmod +x /usr/bin/ws >/dev/null 2>&1 
     chmod 644 /usr/bin/tun.conf >/dev/null 2>&1 
