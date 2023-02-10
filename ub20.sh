@@ -111,12 +111,12 @@ case $menu_num in
 esac
 
 function install_sc() {
-    make_folder_xray
-    dependency_install
-    cloudflare
-    #acme
-    #nginx_install
-    #configure_nginx
+    #make_folder_xray
+    #dependency_install
+    #cloudflare
+    acme
+    nginx_install
+    configure_nginx
     #download_config    
     #install_xray
     #restart_system
@@ -167,7 +167,7 @@ function dependency_install() {
     wget -q -O /etc/fightertunnel.txt https://github.com/Rega23/mrg/raw/main/fodder/FighterTunnel-examples/banner >/dev/null 2>&1
 
     judge "Installed msmtp-mta ca-certificates"
-    apt install msmtp-mta ca-certificates bsd-mailx -y
+    apt install msmtp-mta ca-certificates bsd-mailx -y >/dev/null 2>&1
 
     judge "Installed sslh"
     wget -O /etc/pam.d/common-password https://github.com/Rega23/mrg/raw/main/fodder/FighterTunnel-examples/common-password >/dev/null 2>&1
@@ -223,8 +223,7 @@ function acme() {
     /root/.acme.sh/acme.sh --upgrade --auto-upgrade 
     /root/.acme.sh/acme.sh --set-default-ca --server letsencrypt 
     /root/.acme.sh/acme.sh --issue -d $domain --standalone -k ec-256 
-    ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/xray/xray.crt --keypath /etc/xray/xray.key --ecc 
-    judge "Installed slowdns"
+    ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/xray/xray.crt --keypath /etc/xray/xray.key --ecc
 }
 
 function nginx_install() {
