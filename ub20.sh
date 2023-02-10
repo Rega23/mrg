@@ -100,7 +100,7 @@ read -p "Please Select [ 1 - 2 ] : " menu_num
 
 case $menu_num in
     1)
-        start
+        install_sc
     ;;
     2)
         exit
@@ -110,7 +110,7 @@ case $menu_num in
     ;;
 esac
 
-function start() {
+function install_sc() {
     make_folder_xray
     dependency_install
     cloudflare
