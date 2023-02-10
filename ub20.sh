@@ -123,7 +123,7 @@ function start() {
 }
 
 function Exit() {
-    exit
+    exit 0
 }
 
 function make_folder_xray() {
