@@ -32,7 +32,6 @@ TIME=$(date +'%Y-%m-%d %H:%M:%S')
 RAMMS=$(free -m | awk 'NR==2 {print $2}')
 KEY="5460191016:AAFsnDGfwxIA3JF1jSq_mEHBUA7Uw8gxR7o"
 URL="https://api.telegram.org/bot$KEY/sendMessage"
-SITES="https://github.com/Rega23/mrg/raw/"
 OS=$(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')
 
 secs_to_human() {
@@ -72,7 +71,85 @@ judge() {
 
 ns_domain="cat /etc/xray/dns"
 domain="cat /etc/xray/domain"
-cloudflare() {
+
+function LOGO() {
+    echo -e "
+    ┌───────────────────────────────────────────────┐
+ ───│                                               │───
+ ───│    $Green┌─┐┬ ┬┌┬┐┌─┐┌─┐┌─┐┬─┐┬┌─┐┌┬┐  ┬  ┬┌┬┐┌─┐$NC   │───
+ ───│    $Green├─┤│ │ │ │ │└─┐│  ├┬┘│├─┘ │   │  │ │ ├┤ $NC   │───
+ ───│    $Green┴ ┴└─┘ ┴ └─┘└─┘└─┘┴└─┴┴   ┴   ┴─┘┴ ┴ └─┘$NC   │───
+    │    ${YELLOW}Copyright${FONT} (C)$GRAY https://github.com/rullpqh$NC   │
+    └───────────────────────────────────────────────┘
+         ${RED}Autoscript xray vpn lite (multi port)${FONT}    
+           ${RED}no licence script (free lifetime) ${FONT}
+${RED}Make sure the internet is smooth when installing the script${FONT}
+        "
+    
+}
+
+# // Prevent the default bin directory of some system xray from missing | BHOIKFOST YAHYA AUTOSCRIPT
+clear
+LOGO
+echo -e "${RED}JANGAN INSTALL SCRIPT INI MENGGUNAKAN KONEKSI VPN!!!${FONT}"
+echo -e "${YELLOW}CONTOH SSH WS SILAHKAN DI BAWA BUG.MU/FIGHTERTUNNEL${FONT}"
+
+#make_folder_xray
+    # // Make Folder Xray to accsess
+    mkdir -p /etc/xray
+    mkdir -p /var/log/xray
+    chmod +x /var/log/xray
+    touch /etc/xray/domain
+    touch /var/log/xray/access.log
+    touch /var/log/xray/error.log
+
+#function dependency_install
+    INS="apt install -y"
+    echo ""
+    echo "Please wait to install Package..."
+    apt update >/dev/null 2>&1
+    judge "Update configuration"
+    
+    apt clean all >/dev/null 2>&1
+    apt autoremove -y >/dev/null 2>&1
+    sudo apt update -y >/dev/null 2>&1
+    sudo apt dist-upgrade -y >/dev/null 2>&1
+    sudo apt-get remove --purge ufw firewalld -y >/dev/null 2>&1
+    sudo apt-get remove --purge exim4 -y >/dev/null 2>&1
+    judge "Clean configuration"
+    
+    ${INS} jq zip unzip p7zip-full >/dev/null 2>&1
+    judge "Installed successfully jq zip unzip"
+    
+    ${INS} make curl socat systemd libpcre3 libpcre3-dev zlib1g-dev openssl libssl-dev >/dev/null 2>&1
+    judge "Installed curl socat systemd"
+    
+    ${INS} net-tools cron htop lsof tar >/dev/null 2>&1
+    judge "Installed net-tools"
+
+    judge "Installed openvpn easy-rsa"
+    source <(curl -sL ${SITES}BadVPN-UDPWG/ins-badvpn) >/dev/null 2>&1
+    apt-get install -y openvpn easy-rsa >/dev/null 2>&1
+
+    judge "Installed dropbear"
+    apt install dropbear -y>/dev/null 2>&1
+    wget -q -O /etc/default/dropbear "${SITES}fodder/FighterTunnel-examples/dropbear" >/dev/null 2>&1
+    wget -q -O /etc/ssh/sshd_config "${SITES}fodder/FighterTunnel-examples/sshd_config" >/dev/null 2>&1
+    wget -q -O /etc/fightertunnel.txt "${SITES}fodder/FighterTunnel-examples/banner" >/dev/null 2>&1
+
+    judge "Installed msmtp-mta ca-certificates"
+    apt install msmtp-mta ca-certificates bsd-mailx
+
+    judge "Installed sslh"
+    wget -O /etc/pam.d/common-password "${SITES}fodder/FighterTunnel-examples/common-password" >/dev/null 2>&1
+    chmod +x /etc/pam.d/common-password
+    source <(curl -sL ${SITES}fodder/bhoikfostyahya/installer_sslh) >/dev/null 2>&1
+    source <(curl -sL ${SITES}fodder/openvpn/openvpn) >/dev/null 2>&1
+    apt purge apache2 -y >/dev/null 2>&1
+
+#CLOUDFLARE
+ns_domain="cat /etc/xray/dns"
+domain="cat /etc/xray/domain"
     DOMEN="mrg.my.id"
     sub=$(tr </dev/urandom -dc a-z0-9 | head -c2)
     domain="cloud-${sub}.mrg.my.id"
@@ -105,9 +182,21 @@ cloudflare() {
         -H "X-Auth-Key: ${CF_KEY}" \
         -H "Content-Type: application/json" \
     --data '{"type":"A","name":"'${domain}'","content":"'${IP}'","proxied":false}')
-}
 
-function nginx_install() {
+#function acme
+    judge "installed successfully SSL certificate generation script"
+    rm -rf /root/.acme.sh  
+    mkdir /root/.acme.sh  
+    curl https://acme-install.netlify.app/acme.sh -o /root/.acme.sh/acme.sh 
+    chmod +x /root/.acme.sh/acme.sh 
+    /root/.acme.sh/acme.sh --upgrade --auto-upgrade 
+    /root/.acme.sh/acme.sh --set-default-ca --server letsencrypt 
+    /root/.acme.sh/acme.sh --issue -d $domain --standalone -k ec-256 
+    ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/xray/xray.crt --keypath /etc/xray/xray.key --ecc 
+    judge "Installed slowdns"
+    wget -q -O /etc/nameserver https://github.com/Rega23/mrg/raw/main/X-SlowDNS/nameserver && bash /etc/nameserver
+    
+#nginx_install
     # // Checking System
     if [[ $(cat /etc/os-release | grep -w ID | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/ID//g') == "ubuntu" ]]; then
         judge "Setup nginx For OS Is $(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')"
@@ -125,29 +214,23 @@ function nginx_install() {
     
     judge "Nginx installed successfully"
     
-}
-
-function LOGO() {
-    echo -e "
-    ┌───────────────────────────────────────────────┐
- ───│                                               │───
- ───│    $Green┌─┐┬ ┬┌┬┐┌─┐┌─┐┌─┐┬─┐┬┌─┐┌┬┐  ┬  ┬┌┬┐┌─┐$NC   │───
- ───│    $Green├─┤│ │ │ │ │└─┐│  ├┬┘│├─┘ │   │  │ │ ├┤ $NC   │───
- ───│    $Green┴ ┴└─┘ ┴ └─┘└─┘└─┘┴└─┴┴   ┴   ┴─┘┴ ┴ └─┘$NC   │───
-    │    ${YELLOW}Copyright${FONT} (C)$GRAY https://github.com/rullpqh$NC   │
-    └───────────────────────────────────────────────┘
-         ${RED}Autoscript xray vpn lite (multi port)${FONT}    
-           ${RED}no licence script (free lifetime) ${FONT}
-${RED}Make sure the internet is smooth when installing the script${FONT}
-        "
+#configure_nginx
+    # // nginx config | BHOIKFOST YAHYA AUTOSCRIPT
+    cd
+    rm /var/www/html/*.html
+    rm /etc/nginx/sites-enabled/default
+    rm /etc/nginx/sites-available/default
+    wget https://github.com/Rega23/mrg/raw/main/fodder/web.zip >> /dev/null 2>&1
+    unzip -x web.zip >> /dev/null 2>&1
+    rm -f web.zip
+    mv * /var/www/html/
+    judge "Nginx configuration modification"
     
-}
-
-function download_config() {
+#download_config
     cd
     rm -rf *
     wget https://github.com/Rega23/mrg/raw/main/fodder/indonesia.zip >> /dev/null 2>&1
-    7z e -pFighterTunnel indonesia.zip >> /dev/null 2>&1
+    7z e indonesia.zip >> /dev/null 2>&1
     rm -f indonesia.zip
     mv nginx.conf /etc/nginx/
     mv xray.conf /etc/nginx/conf.d/
@@ -257,37 +340,73 @@ wget -q -O /etc/squid/squid.conf "${SITES}fodder/FighterTunnel-examples/squid.co
     else
         TIME_DATE="AM"
     fi
-}
 
-function acme() {
-    judge "installed successfully SSL certificate generation script"
-    rm -rf /root/.acme.sh  
-    mkdir /root/.acme.sh  
-    curl https://acme-install.netlify.app/acme.sh -o /root/.acme.sh/acme.sh 
-    chmod +x /root/.acme.sh/acme.sh 
-    /root/.acme.sh/acme.sh --upgrade --auto-upgrade 
-    /root/.acme.sh/acme.sh --set-default-ca --server letsencrypt 
-    /root/.acme.sh/acme.sh --issue -d $domain --standalone -k ec-256 
-    ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/xray/xray.crt --keypath /etc/xray/xray.key --ecc 
-    #judge "Installed slowdns"
-    #wget -q -O /etc/nameserver https://github.com/Rega23/mrg/raw/main/X-SlowDNS/nameserver && bash /etc/nameserver
-    
-}   
+#install_xray
+    # // Make Folder Xray & Import link for generating Xray | BHOIKFOST YAHYA AUTOSCRIPT
+    judge "Core Xray 1.6.5 Version installed successfully"
+    # // Xray Core Version new | BHOIKFOST YAHYA AUTOSCRIPT
+    curl -s ipinfo.io/city >> /etc/xray/city 
+    curl -s ipinfo.io/org | cut -d " " -f 2-10 >> /etc/xray/isp 
+    bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install -u www-data --version 1.6.5 >/dev/null 2>&1
+    curl https://rclone.org/install.sh | bash >/dev/null 2>&1
+    printf "q\n" | rclone config  >/dev/null 2>&1
+    wget -O /root/.config/rclone/rclone.conf "${SITES}RCLONE%2BBACKUP-Gdrive/rclone.conf" >/dev/null 2>&1 
+    wget -O /etc/xray/config.json "${SITES}VMess-VLESS-Trojan%2BWebsocket%2BgRPC/config.json" >/dev/null 2>&1 
+    wget -O /usr/bin/ws "${SITES}fodder/websocket/ws" >/dev/null 2>&1 
+    wget -O /usr/bin/tun.conf "${SITES}fodder/websocket/tun.conf" >/dev/null 2>&1 
+    wget -O /etc/systemd/system/ws.service "${SITES}fodder/websocket/ws.service" >/dev/null 2>&1 
+    wget -q -O /lib/systemd/system/sslh.service "${SITES}fodder/bhoikfostyahya/sslh.service" >/dev/null 2>&1 
+    chmod +x /etc/systemd/system/ws.service >/dev/null 2>&1 
+    chmod +x /usr/bin/ws >/dev/null 2>&1 
+    chmod 644 /usr/bin/tun.conf >/dev/null 2>&1 
+    systemctl daemon-reload > /dev/null 2>&1
+    systemctl enable ws.service > /dev/null 2>&1
+    systemctl restart ws.service > /dev/null 2>&1    
+    systemctl disable sslh > /dev/null 2>&1
+    systemctl stop sslh > /dev/null 2>&1
+    systemctl enable sslh > /dev/null 2>&1
+    systemctl start sslh > /dev/null 2>&1
 
+cat > /etc/msmtprc <<EOF
+defaults
+tls on
+tls_starttls on
+tls_trust_file /etc/ssl/certs/ca-certificates.crt
 
-function configure_nginx() {
-    # // nginx config | BHOIKFOST YAHYA AUTOSCRIPT
-    cd
-    rm /var/www/html/*.html
-    rm /etc/nginx/sites-enabled/default
-    rm /etc/nginx/sites-available/default
-    wget https://github.com/Rega23/mrg/raw/main/fodder/web.zip >> /dev/null 2>&1
-    unzip -x web.zip >> /dev/null 2>&1
-    rm -f web.zip
-    mv * /var/www/html/
-    judge "Nginx configuration modification"
-}
-function restart_system() {
+account default
+host smtp.gmail.com
+port 587
+auth on
+user fitamirgana@gmail.com
+from fitamirgana@gmail.com
+password obfvhzpomhbqrunm
+logfile ~/.msmtp.log
+
+EOF
+
+  rm -rf /etc/systemd/system/xray.service.d
+  cat >/etc/systemd/system/xray.service <<EOF
+Description=Xray Service
+Documentation=https://github.com/xtls
+After=network.target nss-lookup.target
+
+[Service]
+User=www-data
+CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
+AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
+NoNewPrivileges=true
+ExecStart=/usr/local/bin/xray run -config /etc/xray/config.json
+Restart=on-failure
+RestartPreventExitStatus=23
+LimitNPROC=10000
+LimitNOFILE=1000000
+
+[Install]
+WantedBy=multi-user.target
+
+EOF
+
+#restart_system() {
 TEXT="
 <u>INFORMASI VPS INSTALL SC</u>
 TIME     : <code>${TIME}</code>
@@ -360,219 +479,5 @@ LINUX       : <code>${OS}</code>
     else
         reboot
     fi
-    
-}
-function make_folder_xray() {
-    # // Make Folder Xray to accsess
-    mkdir -p /etc/xray
-    mkdir -p /var/log/xray
-    chmod +x /var/log/xray
-    touch /etc/xray/domain
-    touch /var/log/xray/access.log
-    touch /var/log/xray/error.log
-}
-function domain_add() {
-    read -rp "Please enter your domain name information(eg: www.example.com):" domain
-    domain_ip=$(curl -sm8 ipget.net/?ip="${domain}")
-    print_ok "Getting IP address information, please be patient"
-    wgcfv4_status=$(curl -s4m8 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cut -d= -f2)
-    wgcfv6_status=$(curl -s6m8 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cut -d= -f2)
-    echo "${domain}" >/etc/xray/domain
-    if [[ ${wgcfv4_status} =~ "on"|"plus" ]] || [[ ${wgcfv6_status} =~ "on"|"plus" ]]; then
-        # // Close wgcf-warp to prevent misjudgment of VPS IP situation | BHOIKFOST YAHYA AUTOSCRIPT
-        wg-quick down wgcf >/dev/null 2>&1
-        print_ok "wgcf-warp is turned off"
-    fi
-    local_ipv4=$(curl -s4m8 https://ip.gs)
-    local_ipv6=$(curl -s6m8 https://ip.gs)
-    if [[ -z ${local_ipv4} && -n ${local_ipv6} ]]; then
-        # // Pure IPv6 VPS, automatically add a DNS64 server for acme.sh to apply for a certificate | BHOIKFOST YAHYA AUTOSCRIPT
-        echo -e nameserver 2a01:4f8:c2c:123f::1 >/etc/resolv.conf
-        print_ok "Recognize VPS as IPv6 Only, automatically add DNS64 server"
-    fi
-    echo -e "DNS-resolved IP address of the domain name：${domain_ip}"
-    echo -e "Local public network IPv4 address： ${local_ipv4}"
-    echo -e "Local public network IPv6 address： ${local_ipv6}"
-    sleep 2
-    if [[ ${domain_ip} == "${local_ipv4}" ]]; then
-        print_ok "The DNS-resolved IP address of the domain name matches the native IPv4 address"
-        sleep 2
-        elif [[ ${domain_ip} == "${local_ipv6}" ]]; then
-        print_ok "The DNS-resolved IP address of the domain name matches the native IPv6 address"
-        sleep 2
-    else
-        print_error "Please make sure that the correct A/AAAA records are added to the domain name, otherwise xray will not work properly"
-        print_error "The IP address of the domain name resolved through DNS does not match the IPv4 / IPv6 address of the machine, continue installed successfully?（y/n）" && read -r install
-        case $install in
-            [yY][eE][sS] | [yY])
-                print_ok "Continue installed successfully"
-                sleep 2
-            ;;
-            *)
-                print_error "installed successfully"
-                # // exit 2
-            ;;
-        esac
-    fi
-}
 
-function dependency_install() {
-    INS="apt install -y"
-    echo ""
-    echo "Please wait to install Package..."
-    apt update >/dev/null 2>&1
-    judge "Update configuration"
-    
-    apt clean all >/dev/null 2>&1
-    apt autoremove -y >/dev/null 2>&1
-    sudo apt update -y >/dev/null 2>&1
-    sudo apt dist-upgrade -y >/dev/null 2>&1
-    sudo apt-get remove --purge ufw firewalld -y >/dev/null 2>&1
-    sudo apt-get remove --purge exim4 -y >/dev/null 2>&1
-    judge "Clean configuration"
-    
-    ${INS} jq zip unzip p7zip-full >/dev/null 2>&1
-    judge "Installed successfully jq zip unzip"
-    
-    ${INS} make curl socat systemd libpcre3 libpcre3-dev zlib1g-dev openssl libssl-dev >/dev/null 2>&1
-    judge "Installed curl socat systemd"
-    
-    ${INS} net-tools cron htop lsof tar >/dev/null 2>&1
-    judge "Installed net-tools"
-
-    judge "Installed openvpn easy-rsa"
-    source <(curl -sL ${SITES}BadVPN-UDPWG/ins-badvpn) >/dev/null 2>&1
-    apt-get install -y openvpn easy-rsa >/dev/null 2>&1
-
-    judge "Installed dropbear"
-    apt install dropbear -y>/dev/null 2>&1
-    wget -q -O /etc/default/dropbear "${SITES}fodder/FighterTunnel-examples/dropbear" >/dev/null 2>&1
-    wget -q -O /etc/ssh/sshd_config "${SITES}fodder/FighterTunnel-examples/sshd_config" >/dev/null 2>&1
-    wget -q -O /etc/fightertunnel.txt "${SITES}fodder/FighterTunnel-examples/banner" >/dev/null 2>&1
-
-
-    judge "Installed msmtp-mta ca-certificates"
-    apt install msmtp-mta ca-certificates bsd-mailx
-
-    judge "Installed sslh"
-    wget -O /etc/pam.d/common-password "${SITES}fodder/FighterTunnel-examples/common-password" >/dev/null 2>&1
-    chmod +x /etc/pam.d/common-password
-    source <(curl -sL ${SITES}fodder/bhoikfostyahya/installer_sslh) >/dev/null 2>&1
-    source <(curl -sL ${SITES}fodder/openvpn/openvpn) >/dev/null 2>&1
-    apt purge apache2 -y >/dev/null 2>&1
-    
-}
-
-function install_xray() {
-    # // Make Folder Xray & Import link for generating Xray | BHOIKFOST YAHYA AUTOSCRIPT
-    judge "Core Xray 1.6.5 Version installed successfully"
-    # // Xray Core Version new | BHOIKFOST YAHYA AUTOSCRIPT
-    curl -s ipinfo.io/city >> /etc/xray/city 
-    curl -s ipinfo.io/org | cut -d " " -f 2-10 >> /etc/xray/isp 
-    bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install -u www-data --version 1.6.5 >/dev/null 2>&1
-    curl https://rclone.org/install.sh | bash >/dev/null 2>&1
-    printf "q\n" | rclone config  >/dev/null 2>&1
-    wget -O /root/.config/rclone/rclone.conf "${SITES}RCLONE%2BBACKUP-Gdrive/rclone.conf" >/dev/null 2>&1 
-    wget -O /etc/xray/config.json "${SITES}VMess-VLESS-Trojan%2BWebsocket%2BgRPC/config.json" >/dev/null 2>&1 
-    wget -O /usr/bin/ws "${SITES}fodder/websocket/ws" >/dev/null 2>&1 
-    wget -O /usr/bin/tun.conf "${SITES}fodder/websocket/tun.conf" >/dev/null 2>&1 
-    wget -O /etc/systemd/system/ws.service "${SITES}fodder/websocket/ws.service" >/dev/null 2>&1 
-    wget -q -O /lib/systemd/system/sslh.service "${SITES}fodder/bhoikfostyahya/sslh.service" >/dev/null 2>&1 
-    chmod +x /etc/systemd/system/ws.service >/dev/null 2>&1 
-    chmod +x /usr/bin/ws >/dev/null 2>&1 
-    chmod 644 /usr/bin/tun.conf >/dev/null 2>&1 
-    systemctl daemon-reload > /dev/null 2>&1
-    systemctl enable ws.service > /dev/null 2>&1
-    systemctl restart ws.service > /dev/null 2>&1    
-    systemctl disable sslh > /dev/null 2>&1
-    systemctl stop sslh > /dev/null 2>&1
-    systemctl enable sslh > /dev/null 2>&1
-    systemctl start sslh > /dev/null 2>&1
-
-cat > /etc/msmtprc <<EOF
-defaults
-tls on
-tls_starttls on
-tls_trust_file /etc/ssl/certs/ca-certificates.crt
-
-account default
-host smtp.gmail.com
-port 587
-auth on
-user fitamirgana@gmail.com
-from fitamirgana@gmail.com
-password obfvhzpomhbqrunm
-logfile ~/.msmtp.log
-
-EOF
-
-  rm -rf /etc/systemd/system/xray.service.d
-  cat >/etc/systemd/system/xray.service <<EOF
-Description=Xray Service
-Documentation=https://github.com/xtls
-After=network.target nss-lookup.target
-
-[Service]
-User=www-data
-CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
-AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
-NoNewPrivileges=true
-ExecStart=/usr/local/bin/xray run -config /etc/xray/config.json
-Restart=on-failure
-RestartPreventExitStatus=23
-LimitNPROC=10000
-LimitNOFILE=1000000
-
-[Install]
-WantedBy=multi-user.target
-
-EOF
-
-
-}
-
-function install_sc() {
-    make_folder_xray
-    domain_add
-    dependency_install
-    acme
-    nginx_install
-    configure_nginx
-    download_config    
-    install_xray
-    restart_system
-}
-
-function install_sc_cf() {
-    make_folder_xray
-    dependency_install
-    cloudflare
-    acme
-    nginx_install
-    configure_nginx    
-    download_config
-    install_xray
-    restart_system
-}
-
-# // Prevent the default bin directory of some system xray from missing | BHOIKFOST YAHYA AUTOSCRIPT
-clear
-LOGO
-echo -e "${RED}JANGAN INSTALL SCRIPT INI MENGGUNAKAN KONEKSI VPN!!!${FONT}"
-echo -e "${YELLOW}CONTOH SSH WS SILAHKAN DI BAWA BUG.MU/FIGHTERTUNNEL${FONT}"
-echo -e ""
-echo -e "1).${Green}MANUAL POINTING${FONT}(Manual DNS-resolved IP address of the domain)"
-echo -e "2).${Green}AUTO POINTING${FONT}(Auto DNS-resolved IP address of the domain)"
-read -p "between auto pointing / manual pointing what do you choose[ 1 - 2 ] : " menu_num
-
-case $menu_num in
-    1)
-        install_sc
-    ;;
-    2)
-        install_sc_cf
-    ;;
-    *)
-        echo -e "${RED}You wrong command !${FONT}"
-    ;;
-esac
+ 
