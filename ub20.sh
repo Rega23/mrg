@@ -100,10 +100,10 @@ read -p "Please Select [ 1 - 2 ] : " menu_num
 
 case $menu_num in
     1)
-        Start
+        install_sc
     ;;
     2)
-        Exit
+        exit 0
     ;;
     *)
         echo -e "${RED}You wrong command !${FONT}"
@@ -120,10 +120,6 @@ function start() {
     #download_config    
     #install_xray
     #restart_system
-}
-
-function Exit() {
-    exit 0
 }
 
 function make_folder_xray() {
