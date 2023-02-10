@@ -111,15 +111,15 @@ case $menu_num in
 esac
 
 function install_sc() {
-    #make_folder_xray
-    #dependency_install
-    #cloudflare
+    make_folder_xray
+    dependency_install
+    cloudflare
     acme
     nginx_install
     configure_nginx
-    #download_config    
-    #install_xray
-    #restart_system
+    download_config    
+    install_xray
+    restart_system
 }
 
 function make_folder_xray() {
