@@ -112,14 +112,14 @@ esac
 
 function start() {
     make_folder_xray
-    dependency_install
-    cloudflare
-    acme
-    nginx_install
-    configure_nginx
-    download_config    
-    install_xray
-    restart_system
+    #dependency_install
+    #cloudflare
+    #acme
+    #nginx_install
+    #configure_nginx
+    #download_config    
+    #install_xray
+    #restart_system
 }
 
 function Exit() {
