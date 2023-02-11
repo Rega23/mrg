@@ -458,7 +458,7 @@ LINUX       : <code>${OS}</code>
     echo "    │                                                       │"
     echo "    │      >>> Server Information & Other Features          │"
     echo "    │   - Timezone                : Asia/Jakarta (GMT +7)   │"
-    echo "    │   - Autoreboot On           : $AUTOREB:00 $TIME_DATE GMT +7   │"
+    echo "    │   - Autoreboot On           : $AUTOREB:00 $TIME_DATE GMT +7      │"
     echo "    │   - Auto Delete Expired Account                       │"
     echo "    │   - Fully automatic script                            │"
     echo "    │   - VPS settings                                      │"
@@ -478,12 +478,12 @@ LINUX       : <code>${OS}</code>
 
 function install_sc() {
     make_folder_xray
-    #dependency_install
-    #cloudflare
-    #acme
-    #nginx_install
-    #configure_nginx
-    #download_config    
+    dependency_install
+    cloudflare
+    acme
+    nginx_install
+    configure_nginx
+    download_config    
     install_xray
     restart_system
 }
