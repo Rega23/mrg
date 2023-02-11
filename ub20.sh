@@ -421,35 +421,34 @@ USER         : <code>${NAMES}</code>
 RAM          : <code>${RAMMS}MB</code>
 LINUX       : <code>${OS}</code>
 "
-    curl -s --max-time $TIMES -d "chat_id=$CHATID&disable_web_page_preview=1&text=$TEXT&parse_mode=html" $URL >/dev/null
-    sed -i "s/xxx/${domain}/g" /var/www/html/index.html >/dev/null 2>&1
-    sed -i "s/xxx/${domain}/g" /etc/nginx/conf.d/xray.conf >/dev/null 2>&1
-    sed -i "s/xxx/${MYIP}/g" /etc/squid/squid.conf >/dev/null 2>&1
-    sed -i -e 's/\r$//' /usr/bin/get-backres >/dev/null 2>&1
-    sed -i -e 's/\r$//' /usr/bin/add-ssh >/dev/null 2>&1
-    sed -i -e 's/\r$//' /usr/bin/cek-ssh >/dev/null 2>&1
-    sed -i -e 's/\r$//' /usr/bin/renew-ssh >/dev/null 2>&1
-    sed -i -e 's/\r$//' /usr/bin/del-ssh >/dev/null 2>&1
-    chown -R www-data:www-data /etc/msmtprc >/dev/null 2>&1
-    systemctl daemon-reload >/dev/null 2>&1
-    systemctl enable client >/dev/null 2>&1
-    systemctl enable server >/dev/null 2>&1
-    systemctl start client >/dev/null 2>&1
-    systemctl start server >/dev/null 2>&1
-    systemctl restart nginx >/dev/null 2>&1
-    systemctl restart xray >/dev/null 2>&1
-    systemctl restart rc-local >/dev/null 2>&1
-    systemctl restart client >/dev/null 2>&1
-    systemctl restart server >/dev/null 2>&1
-    systemctl restart ssh >/dev/null 2>&1
-    systemctl restart stunnel4 >/dev/null 2>&1
-    systemctl restart sslh >/dev/null 2>&1
-    systemctl restart dropbear >/dev/null 2>&1
-    systemctl restart squid >/dev/null 2>&1
-    systemctl restart ws >/dev/null 2>&1
-    systemctl restart openvpn >/dev/null 2>&1
-    systemctl restart cron >/dev/null 2>&1
-    clear
+    curl -s --max-time $TIMES -d "chat_id=$CHATID&disable_web_page_preview=1&text=$TEXT&parse_mode=html" $URL
+    sed -i "s/xxx/${domain}/g" /var/www/html/index.html 
+    sed -i "s/xxx/${domain}/g" /etc/nginx/conf.d/xray.conf 
+    sed -i "s/xxx/${MYIP}/g" /etc/squid/squid.conf 
+    sed -i -e 's/\r$//' /usr/bin/get-backres 
+    sed -i -e 's/\r$//' /usr/bin/add-ssh 
+    sed -i -e 's/\r$//' /usr/bin/cek-ssh 
+    sed -i -e 's/\r$//' /usr/bin/renew-ssh 
+    sed -i -e 's/\r$//' /usr/bin/del-ssh 
+    chown -R www-data:www-data /etc/msmtprc 
+    systemctl daemon-reload 
+    systemctl enable client 
+    systemctl enable server 
+    systemctl start client 
+    systemctl start server 
+    systemctl restart nginx 
+    systemctl restart xray 
+    systemctl restart rc-local 
+    systemctl restart client 
+    systemctl restart server 
+    systemctl restart ssh 
+    systemctl restart stunnel4 
+    systemctl restart sslh 
+    systemctl restart dropbear 
+    systemctl restart squid 
+    systemctl restart ws 
+    systemctl restart openvpn 
+    systemctl restart cron 
     LOGO
     echo "    ┌───────────────────────────────────────────────────────┐"
     echo "    │       >>> Service & Port                              │"
@@ -485,14 +484,14 @@ LINUX       : <code>${OS}</code>
 }
 
 function install_sc() {
-    #make_folder_xray
-    #dependency_install
-    #cloudflare
-    #acme
-    #nginx_install
-    #configure_nginx
-    #download_config    
-    #install_xray
+    make_folder_xray
+    dependency_install
+    cloudflare
+    acme
+    nginx_install
+    configure_nginx
+    download_config    
+    install_xray
     restart_system
 }
 
