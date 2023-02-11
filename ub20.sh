@@ -359,7 +359,7 @@ function install_xray() {
     chmod 644 /usr/bin/tun.conf
     systemctl daemon-reload 
     systemctl enable ws.service 
-    systemctl restart ws.servic
+    systemctl restart ws.service
 
 cat > /etc/msmtprc <<EOF
 defaults
@@ -478,12 +478,12 @@ LINUX       : <code>${OS}</code>
 
 function install_sc() {
     make_folder_xray
-    dependency_install
-    cloudflare
-    acme
-    nginx_install
-    configure_nginx
-    download_config    
+    #dependency_install
+    #cloudflare
+    #acme
+    #nginx_install
+    #configure_nginx
+    #download_config    
     install_xray
     restart_system
 }
