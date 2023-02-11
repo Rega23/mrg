@@ -485,14 +485,14 @@ LINUX       : <code>${OS}</code>
 }
 
 function install_sc() {
-    make_folder_xray
-    dependency_install
-    cloudflare
-    acme
-    nginx_install
-    configure_nginx
-    download_config    
-    install_xray
+    #make_folder_xray
+    #dependency_install
+    #cloudflare
+    #acme
+    #nginx_install
+    #configure_nginx
+    #download_config    
+    #install_xray
     restart_system
 }
 
