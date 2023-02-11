@@ -431,16 +431,10 @@ LINUX       : <code>${OS}</code>
     sed -i -e 's/\r$//' /usr/bin/renew-ssh 
     sed -i -e 's/\r$//' /usr/bin/del-ssh 
     chown -R www-data:www-data /etc/msmtprc 
-    systemctl daemon-reload 
-    systemctl enable client 
-    systemctl enable server 
-    systemctl start client 
-    systemctl start server 
+    systemctl daemon-reload     
     systemctl restart nginx 
     systemctl restart xray 
     systemctl restart rc-local 
-    systemctl restart client 
-    systemctl restart server 
     systemctl restart ssh 
     systemctl restart stunnel4 
     systemctl restart sslh 
