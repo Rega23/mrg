@@ -359,9 +359,7 @@ function install_xray() {
     chmod 644 /usr/bin/tun.conf
     systemctl daemon-reload 
     systemctl enable ws.service 
-    systemctl restart ws.service     
-    systemctl enable sslh 
-    systemctl restart sslh 
+    systemctl restart ws.servic
 
 cat > /etc/msmtprc <<EOF
 defaults
