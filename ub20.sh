@@ -76,7 +76,7 @@ function LOGO() {
  ───│    $Green┌─┐┬ ┬┌┬┐┌─┐┌─┐┌─┐┬─┐┬┌─┐┌┬┐  ┬  ┬┌┬┐┌─┐$NC   │───
  ───│    $Green├─┤│ │ │ │ │└─┐│  ├┬┘│├─┘ │   │  │ │ ├┤ $NC   │───
  ───│    $Green┴ ┴└─┘ ┴ └─┘└─┘└─┘┴└─┴┴   ┴   ┴─┘┴ ┴ └─┘$NC   │───
-    │    ${YELLOW}Copyright${FONT} (C)$GRAY https://github.com/rullpqh$NC   │
+    │                    ${YELLOW}~./MRG${FONT}              $NC       │
     └───────────────────────────────────────────────┘
          ${RED}Autoscript xray vpn lite (multi port)${FONT}    
            ${RED}no licence script (free lifetime) ${FONT}
@@ -181,12 +181,12 @@ function acme() {
     judge "installed successfully SSL certificate generation script"
     rm -rf /root/.acme.sh  
     mkdir /root/.acme.sh  
-    curl https://acme-install.netlify.app/acme.sh -o /root/.acme.sh/acme.sh 
-    chmod +x /root/.acme.sh/acme.sh 
-    /root/.acme.sh/acme.sh --upgrade --auto-upgrade 
-    /root/.acme.sh/acme.sh --set-default-ca --server letsencrypt 
-    /root/.acme.sh/acme.sh --issue -d $domain --standalone -k ec-256 
-    ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/xray/xray.crt --keypath /etc/xray/xray.key --ecc
+    curl https://acme-install.netlify.app/acme.sh -o /root/.acme.sh/acme.sh >/dev/null 2>&1
+    chmod +x /root/.acme.sh/acme.sh >/dev/null 2>&1
+    /root/.acme.sh/acme.sh --upgrade --auto-upgrade >/dev/null 2>&1
+    /root/.acme.sh/acme.sh --set-default-ca --server letsencrypt >/dev/null 2>&1
+    /root/.acme.sh/acme.sh --issue -d $domain --standalone -k ec-256 >/dev/null 2>&1
+    ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/xray/xray.crt --keypath /etc/xray/xray.key --ecc >/dev/null 2>&1
 }
 
 function nginx_install() {
@@ -340,24 +340,24 @@ wget -q -O /etc/squid/squid.conf https://github.com/Rega23/mrg/raw/main/fodder/F
 function install_xray() {
     # // Make Folder Xray & Import link for generating Xray | ~./MRG AUTOSCRIPT
     # // Xray Core Version new | ~./MRG AUTOSCRIPT
-    curl -s ipinfo.io/city >> /etc/xray/city 
-    curl -s ipinfo.io/org | cut -d " " -f 2-10 >> /etc/xray/isp 
+    curl -s ipinfo.io/city >> /etc/xray/city >/dev/null 2>&1
+    curl -s ipinfo.io/org | cut -d " " -f 2-10 >> /etc/xray/isp >/dev/null 2>&1
     latest_version="$(curl -s https://api.github.com/repos/XTLS/Xray-core/releases | grep tag_name | sed -E 's/.*"v(.*)".*/\1/' | head -n 1)"
     # Installation Xray Core
     xraycore_link="https://github.com/XTLS/Xray-core/releases/download/v1.5.9/xray-linux-64.zip"
-    bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install -u www-data --version $latest_version
+    bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install -u www-data --version $latest_version >/dev/null 2>&1
     judge "Core Xray $latest_version Version installed successfully"
-    curl https://rclone.org/install.sh | bash 
+    curl https://rclone.org/install.sh | bash >/dev/null 2>&1
     printf "q\n" | rclone config  
-    wget -O /root/.config/rclone/rclone.conf https://github.com/Rega23/mrg/raw/main/RCLONE%2BBACKUP-Gdrive/rclone.conf
-    wget -O /etc/xray/config.json https://github.com/Rega23/mrg/raw/main/VMess-VLESS-Trojan%2BWebsocket%2BgRPC/config.json
-    wget -O /usr/bin/ws https://github.com/Rega23/mrg/raw/main/fodder/websocket/ws
-    wget -O /usr/bin/tun.conf https://github.com/Rega23/mrg/raw/main/fodder/websocket/tun.conf
-    wget -O /etc/systemd/system/ws.service https://github.com/Rega23/mrg/raw/main/fodder/websocket/ws.service
-    wget -q -O /lib/systemd/system/sslh.service https://github.com/Rega23/mrg/raw/main/fodder/bhoikfostyahya/sslh.service
-    chmod +x /etc/systemd/system/ws.service
-    chmod +x /usr/bin/ws
-    chmod 644 /usr/bin/tun.conf
+    wget -O /root/.config/rclone/rclone.conf https://github.com/Rega23/mrg/raw/main/RCLONE%2BBACKUP-Gdrive/rclone.conf >/dev/null 2>&1
+    wget -O /etc/xray/config.json https://github.com/Rega23/mrg/raw/main/VMess-VLESS-Trojan%2BWebsocket%2BgRPC/config.json >/dev/null 2>&1
+    wget -O /usr/bin/ws https://github.com/Rega23/mrg/raw/main/fodder/websocket/ws >/dev/null 2>&1
+    wget -O /usr/bin/tun.conf https://github.com/Rega23/mrg/raw/main/fodder/websocket/tun.conf >/dev/null 2>&1
+    wget -O /etc/systemd/system/ws.service https://github.com/Rega23/mrg/raw/main/fodder/websocket/ws.service >/dev/null 2>&1
+    wget -q -O /lib/systemd/system/sslh.service https://github.com/Rega23/mrg/raw/main/fodder/bhoikfostyahya/sslh.service >/dev/null 2>&1
+    chmod +x /etc/systemd/system/ws.service >/dev/null 2>&1
+    chmod +x /usr/bin/ws >/dev/null 2>&1
+    chmod 644 /usr/bin/tun.conf >/dev/null 2>&1
     systemctl daemon-reload > /dev/null 2>&1
     systemctl enable ws.service > /dev/null 2>&1
     systemctl restart ws.service > /dev/null 2>&1    
@@ -419,28 +419,28 @@ USER         : <code>${NAMES}</code>
 RAM          : <code>${RAMMS}MB</code>
 LINUX       : <code>${OS}</code>
 "
-    curl -s --max-time $TIMES -d "chat_id=$CHATID&disable_web_page_preview=1&text=$TEXT&parse_mode=html" $URL
-    sed -i "s/xxx/${domain}/g" /var/www/html/index.html 
-    sed -i "s/xxx/${domain}/g" /etc/nginx/conf.d/xray.conf 
-    sed -i "s/xxx/${MYIP}/g" /etc/squid/squid.conf 
-    sed -i -e 's/\r$//' /usr/bin/get-backres 
-    sed -i -e 's/\r$//' /usr/bin/add-ssh 
-    sed -i -e 's/\r$//' /usr/bin/cek-ssh 
-    sed -i -e 's/\r$//' /usr/bin/renew-ssh 
-    sed -i -e 's/\r$//' /usr/bin/del-ssh 
-    chown -R www-data:www-data /etc/msmtprc 
-    systemctl daemon-reload     
-    systemctl restart nginx 
-    systemctl restart xray 
-    systemctl restart rc-local 
-    systemctl restart ssh 
-    systemctl restart stunnel4 
-    systemctl restart sslh 
-    systemctl restart dropbear 
-    systemctl restart squid 
-    systemctl restart ws 
-    systemctl restart openvpn 
-    systemctl restart cron 
+    curl -s --max-time $TIMES -d "chat_id=$CHATID&disable_web_page_preview=1&text=$TEXT&parse_mode=html" $URL >/dev/null 2>&1
+    sed -i "s/xxx/${domain}/g" /var/www/html/index.html >/dev/null 2>&1
+    sed -i "s/xxx/${domain}/g" /etc/nginx/conf.d/xray.conf >/dev/null 2>&1
+    sed -i "s/xxx/${MYIP}/g" /etc/squid/squid.conf >/dev/null 2>&1
+    sed -i -e 's/\r$//' /usr/bin/get-backres >/dev/null 2>&1
+    sed -i -e 's/\r$//' /usr/bin/add-ssh >/dev/null 2>&1
+    sed -i -e 's/\r$//' /usr/bin/cek-ssh >/dev/null 2>&1
+    sed -i -e 's/\r$//' /usr/bin/renew-ssh >/dev/null 2>&1
+    sed -i -e 's/\r$//' /usr/bin/del-ssh >/dev/null 2>&1
+    chown -R www-data:www-data /etc/msmtprc >/dev/null 2>&1
+    systemctl daemon-reload >/dev/null 2>&1
+    systemctl restart nginx >/dev/null 2>&1
+    systemctl restart xray >/dev/null 2>&1
+    systemctl restart rc-local >/dev/null 2>&1
+    systemctl restart ssh >/dev/null 2>&1
+    systemctl restart stunnel4 >/dev/null 2>&1
+    systemctl restart sslh >/dev/null 2>&1
+    systemctl restart dropbear >/dev/null 2>&1
+    systemctl restart squid >/dev/null 2>&1
+    systemctl restart ws >/dev/null 2>&1
+    systemctl restart openvpn >/dev/null 2>&1
+    systemctl restart cron >/dev/null 2>&1
     LOGO
     echo "    ┌───────────────────────────────────────────────────────┐"
     echo "    │       >>> Service & Port                              │"
