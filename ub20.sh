@@ -360,6 +360,13 @@ function install_xray() {
     chmod +x /etc/systemd/system/ws.service
     chmod +x /usr/bin/ws
     chmod 644 /usr/bin/tun.conf
+    systemctl daemon-reload > /dev/null 2>&1
+    systemctl enable ws.service > /dev/null 2>&1
+    systemctl restart ws.service > /dev/null 2>&1    
+    systemctl disable sslh > /dev/null 2>&1
+    systemctl stop sslh > /dev/null 2>&1
+    systemctl enable sslh > /dev/null 2>&1
+    systemctl start sslh > /dev/null 2>&1
 
 cat > /etc/msmtprc <<EOF
 defaults
@@ -379,7 +386,8 @@ logfile ~/.msmtp.log
 EOF
 
   rm -rf /etc/systemd/system/xray.service.d
-  cat >/etc/systemd/system/xray.service <<EOF
+
+cat >/etc/systemd/system/xray.service <<EOF
 Description=Xray Service
 Documentation=https://github.com/xtls
 After=network.target nss-lookup.target
