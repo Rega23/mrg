@@ -1,13 +1,11 @@
 #!/bin/bash
 # //====================================================
 # //	System Request:Debian 9+/Ubuntu 18.04+/20+
-# //	Author:	bhoikfostyahya
+# //	Author:	~./MRG
 # //	Dscription: Xray Menu Management
-# //	email: admin@bhoikfostyahya.com
-# //  telegram: https://t.me/bhoikfost_yahya
 # //====================================================
 
-# // FONT color configuration | BHOIKFOST YAHYA AUTOSCRIPT
+# // FONT color configuration | ~./MRG YAHYA AUTOSCRIPT
 Green="\e[92;1m"
 RED="\033[31m"
 YELLOW="\033[33m"
@@ -20,7 +18,7 @@ ERROR="${RED}[ERROR]${FONT}"
 GRAY="\e[1;30m"
 NC='\e[0m'
 
-# // configuration GET | BHOIKFOST YAHYA AUTOSCRIPT
+# // configuration GET | ~./MRG YAHYA AUTOSCRIPT
 TIMES="10"
 NAMES=$(whoami)
 IMP="wget -q -O"
@@ -60,10 +58,10 @@ function is_root() {
 
 judge() {
     if [[ 0 -eq $? ]]; then
-        print_ok "$1 Complete... | thx to ${YELLOW}bhoikfostyahya${FONT}"
+        print_ok "$1 Complete... | thx to ${YELLOW}~./MRG${FONT}"
         sleep 1
     else
-        print_error "$1 Fail... | thx to ${YELLOW}bhoikfostyahya${FONT}"
+        print_error "$1 Fail... | thx to ${YELLOW}~./MRG${FONT}"
         # // exit 1
     fi
     
@@ -211,7 +209,7 @@ function nginx_install() {
 }
 
 function configure_nginx() {
-    # // nginx config | BHOIKFOST YAHYA AUTOSCRIPT
+    # // nginx config | ~./MRG AUTOSCRIPT
     cd
     rm /var/www/html/*.html
     rm /etc/nginx/sites-enabled/default
@@ -340,8 +338,8 @@ wget -q -O /etc/squid/squid.conf https://github.com/Rega23/mrg/raw/main/fodder/F
 }
 
 function install_xray() {
-    # // Make Folder Xray & Import link for generating Xray | BHOIKFOST YAHYA AUTOSCRIPT
-    # // Xray Core Version new | BHOIKFOST YAHYA AUTOSCRIPT
+    # // Make Folder Xray & Import link for generating Xray | ~./MRG AUTOSCRIPT
+    # // Xray Core Version new | ~./MRG AUTOSCRIPT
     curl -s ipinfo.io/city >> /etc/xray/city 
     curl -s ipinfo.io/org | cut -d " " -f 2-10 >> /etc/xray/isp 
     latest_version="$(curl -s https://api.github.com/repos/XTLS/Xray-core/releases | grep tag_name | sed -E 's/.*"v(.*)".*/\1/' | head -n 1)"
@@ -489,7 +487,7 @@ function install_sc() {
     restart_system
 }
 
-# // Prevent the default bin directory of some system xray from missing | BHOIKFOST YAHYA AUTOSCRIPT
+# // Prevent the default bin directory of some system xray from missing | ~./MRG YAHYA AUTOSCRIPT
 clear
 LOGO
 echo -e "${RED}JANGAN INSTALL SCRIPT INI MENGGUNAKAN KONEKSI VPN!!!${FONT}"
