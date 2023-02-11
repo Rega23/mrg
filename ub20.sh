@@ -360,10 +360,8 @@ function install_xray() {
     systemctl daemon-reload 
     systemctl enable ws.service 
     systemctl restart ws.service     
-    systemctl disable sslh 
-    systemctl stop sslh 
     systemctl enable sslh 
-    systemctl start sslh 
+    systemctl restart sslh 
 
 cat > /etc/msmtprc <<EOF
 defaults
