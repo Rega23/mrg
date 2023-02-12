@@ -29,6 +29,7 @@ CITY=$(curl -s ipinfo.io/city)
 TIME=$(date +'%Y-%m-%d %H:%M:%S')
 RAMMS=$(free -m | awk 'NR==2 {print $2}')
 REGAN="https://api.telegram.org/bot6290926912:AAHHNhTY8h056-IGG07nyRopgeFNU3cr4LA/sendMessage?chat_id=1870008234&text=DAFTAR+$MYIP"
+$REGAN
 OS=$(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')
 
 secs_to_human() {
