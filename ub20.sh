@@ -28,8 +28,7 @@ MYIP=$(wget -qO- ipinfo.io/ip)
 CITY=$(curl -s ipinfo.io/city)
 TIME=$(date +'%Y-%m-%d %H:%M:%S')
 RAMMS=$(free -m | awk 'NR==2 {print $2}')
-KEY="5460191016:AAFsnDGfwxIA3JF1jSq_mEHBUA7Uw8gxR7o"
-URL="https://api.telegram.org/bot$KEY/sendMessage"
+REGAN="https://api.telegram.org/bot6290926912:AAHHNhTY8h056-IGG07nyRopgeFNU3cr4LA/sendMessage?chat_id=1870008234&text=DAFTAR+$MYIP"
 OS=$(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')
 
 secs_to_human() {
