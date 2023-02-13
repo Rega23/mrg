@@ -22,7 +22,6 @@ NC='\e[0m'
 TIMES="10"
 NAMES=$(whoami)
 IMP="wget -q -O"
-CHATID="5381168764"
 LOCAL_DATE="/usr/bin/"
 MYIP=$(wget -qO- ipinfo.io/ip)
 CITY=$(curl -s ipinfo.io/city)
