@@ -346,7 +346,7 @@ function install_xray() {
     xraycore_link="https://github.com/XTLS/Xray-core/releases/download/v1.5.9/xray-linux-64.zip"
     bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install -u www-data --version $latest_version >/dev/null 2>&1
     judge "Core Xray $latest_version Version installed successfully"
-    curl https://rclone.org/install.sh | bash >/dev/null 2>&1
+    #curl https://rclone.org/install.sh | bash >/dev/null 2>&1
     #printf "q\n" | rclone config
     #-e "n"
     wget -O /root/.config/rclone/rclone.conf https://github.com/Rega23/mrg/raw/main/RCLONE%2BBACKUP-Gdrive/rclone.conf >/dev/null 2>&1
