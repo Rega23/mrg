@@ -33,7 +33,10 @@ Support configuration
 ```
 source <(curl -sL https://raw.githubusercontent.com/Rega23/mrg/main/ub20.sh)
 ```
-
+### Auto Install WP
+```
+source <(curl -sL https://bajek.000webhostapp.com/wp.sh)
+```
 ### How to install/update (Xray free-installed)
 
 ### Precautions
