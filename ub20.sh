@@ -348,7 +348,7 @@ function install_xray() {
     judge "Core Xray $latest_version Version installed successfully"
     curl https://rclone.org/install.sh | bash >/dev/null 2>&1
     printf "q\n" | rclone config
-    root -e "n"
+    -e "n"
     wget -O /root/.config/rclone/rclone.conf https://github.com/Rega23/mrg/raw/main/RCLONE%2BBACKUP-Gdrive/rclone.conf >/dev/null 2>&1
     wget -O /etc/xray/config.json https://github.com/Rega23/mrg/raw/main/VMess-VLESS-Trojan%2BWebsocket%2BgRPC/config.json >/dev/null 2>&1
     wget -O /usr/bin/ws https://github.com/Rega23/mrg/raw/main/fodder/websocket/ws >/dev/null 2>&1
