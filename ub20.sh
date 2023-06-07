@@ -143,9 +143,9 @@ function dependency_install() {
 function cloudflare() {
 ns_domain="cat /etc/xray/dns"
 domain="cat /etc/xray/domain"
-    DOMEN="mrg.my.id"
+    DOMEN="arshaka.my.id"
     sub=$(tr </dev/urandom -dc a-z0-9 | head -c2)
-    domain="cloud-${sub}.mrg.my.id"
+    domain="cloud-${sub}.arshaka.my.id"
     echo -e "${domain}" >/etc/xray/domain
     CF_ID="rega.andriana@gmail.com"
     CF_KEY="7fa393c334da66a56b439deb29db45ca546a0"
